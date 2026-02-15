@@ -733,8 +733,9 @@ outputs:
 - name: basic_schematic_diff
   comment: Basic schematic diffs
   type: diff
-  pcb: false
   dir: Diff
+  options:
+    pcb: false
 - name: basic_pcb_diff
   comment: Basic PCB diffs
   type: diff
