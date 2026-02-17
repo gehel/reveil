@@ -20,6 +20,7 @@ jobs:
       with:
         # Required - kibot config file
         config: config.kibot.yaml
+        dir: output
     - name: upload results
       if: ${{ always() }}
       uses: actions/upload-artifact@v4
