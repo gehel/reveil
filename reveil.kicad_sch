@@ -1631,6 +1631,191 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Motor:Motor_DC"
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "M"
+				(at 2.54 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Motor_DC"
+				(at 2.54 -5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 -2.286 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 -2.286 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "DC Motor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "DC Motor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "PinHeader*P2.54mm* TerminalBlock*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Motor_DC_0_0"
+				(polyline
+					(pts
+						(xy -1.27 -3.302) (xy -1.27 0.508) (xy 0 -2.032) (xy 1.27 0.508) (xy 1.27 -3.302)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Motor_DC_0_1"
+				(polyline
+					(pts
+						(xy 0 2.032) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 1.7272) (xy 0 2.0828)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -1.524)
+					(radius 3.2512)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -4.7752) (xy 0 -5.1816)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -7.62) (xy 0 -7.112)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Motor_DC_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Switch:SW_Push"
 			(pin_numbers
 				(hide yes)
@@ -2183,6 +2368,131 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "power:VBUS"
+			(power)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "VBUS"
+				(at 0 3.556 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"VBUS\""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "VBUS_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "VBUS_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(wire
 		(pts
@@ -2196,17 +2506,47 @@
 	)
 	(wire
 		(pts
-			(xy 36.83 157.48) (xy 34.29 157.48)
+			(xy 82.55 99.06) (xy 82.55 96.52)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3de46aa5-5b50-41a6-b253-55aa0ccfc276")
+		(uuid "0a350780-ea7e-4337-b7a3-2b0ff331cfd3")
 	)
 	(wire
 		(pts
-			(xy 87.63 19.05) (xy 87.63 22.86)
+			(xy 82.55 20.32) (xy 82.55 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "446ce8da-b294-4df1-bbc8-3d37d259cf8a")
+	)
+	(wire
+		(pts
+			(xy 57.15 73.66) (xy 59.69 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "591c7822-43ee-4e9e-af7a-dc7e102129e9")
+	)
+	(wire
+		(pts
+			(xy 57.15 71.12) (xy 59.69 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c10669c-6cf3-4796-ab9e-a21b1f76634d")
+	)
+	(wire
+		(pts
+			(xy 87.63 20.32) (xy 87.63 22.86)
 		)
 		(stroke
 			(width 0)
@@ -2216,7 +2556,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 168.91) (xy 88.9 171.45)
+			(xy 106.68 182.88) (xy 106.68 185.42)
 		)
 		(stroke
 			(width 0)
@@ -2256,13 +2596,23 @@
 	)
 	(wire
 		(pts
-			(xy 34.29 157.48) (xy 34.29 160.02)
+			(xy 35.56 177.8) (xy 35.56 180.34)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c3164b23-c847-409f-b0a9-eb9ca04705fd")
+		(uuid "c0a59ef7-08d3-461f-b308-ce299177a023")
+	)
+	(wire
+		(pts
+			(xy 57.15 68.58) (xy 59.69 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e6d6d205-7c93-4844-9ed6-1236461d0d26")
 	)
 	(global_label "HEURE_ALARME_DIN"
 		(shape input)
@@ -2330,9 +2680,75 @@
 			)
 		)
 	)
+	(global_label "DATE_LOAD"
+		(shape input)
+		(at 57.15 68.58 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "872c1d1a-e0ed-4fda-9804-9ec10e31d9d8")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 44.0048 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "DATE_CLK"
+		(shape input)
+		(at 57.15 71.12 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "877d1a9e-13b0-4fc0-b8e4-90b73ae3f63f")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 45.1539 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "DATE_DIN"
+		(shape input)
+		(at 57.15 73.66 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "fea51464-c678-4c3c-872a-eeb5d5621506")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 45.5167 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(symbol
 		(lib_id "power:GND")
-		(at 88.9 171.45 0)
+		(at 106.68 185.42 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2341,7 +2757,7 @@
 		(fields_autoplaced yes)
 		(uuid "130aa7c3-9890-4e1e-8e75-edcab37df03a")
 		(property "Reference" "#PWR08"
-			(at 88.9 177.8 0)
+			(at 106.68 191.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2350,7 +2766,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 88.9 176.53 0)
+			(at 106.68 190.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2358,7 +2774,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 88.9 171.45 0)
+			(at 106.68 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2367,7 +2783,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 88.9 171.45 0)
+			(at 106.68 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2376,7 +2792,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 88.9 171.45 0)
+			(at 106.68 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2397,8 +2813,74 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 82.55 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2672feac-652a-4f36-b442-beb5c59e88e6")
+		(property "Reference" "#PWR012"
+			(at 82.55 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 82.55 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 82.55 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 82.55 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 82.55 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0f105e93-cccc-47a8-a26a-4f75b042bf95")
+		)
+		(instances
+			(project "reveil"
+				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
+					(reference "#PWR012")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Switch:SW_Push")
-		(at 92.71 111.76 0)
+		(at 134.62 77.47 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2407,7 +2889,7 @@
 		(fields_autoplaced yes)
 		(uuid "3417f01d-ca3a-470f-84e7-89c500d23506")
 		(property "Reference" "SW2"
-			(at 92.71 104.14 0)
+			(at 134.62 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2415,7 +2897,7 @@
 			)
 		)
 		(property "Value" "SW_Push"
-			(at 92.71 106.68 0)
+			(at 134.62 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2423,7 +2905,7 @@
 			)
 		)
 		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm"
-			(at 92.71 106.68 0)
+			(at 134.62 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2432,7 +2914,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 92.71 106.68 0)
+			(at 134.62 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2441,7 +2923,7 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
-			(at 92.71 111.76 0)
+			(at 134.62 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2466,7 +2948,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 87.63 19.05 0)
+		(at 87.63 20.32 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2475,7 +2957,7 @@
 		(fields_autoplaced yes)
 		(uuid "55198772-5b24-4f09-852e-9e13c7f9a034")
 		(property "Reference" "#PWR010"
-			(at 87.63 22.86 0)
+			(at 87.63 24.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2484,7 +2966,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 87.63 13.97 0)
+			(at 87.63 15.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2492,7 +2974,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 87.63 19.05 0)
+			(at 87.63 20.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2501,7 +2983,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 87.63 19.05 0)
+			(at 87.63 20.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2510,7 +2992,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 87.63 19.05 0)
+			(at 87.63 20.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2532,7 +3014,7 @@
 	)
 	(symbol
 		(lib_id "Switch:SW_Push")
-		(at 92.71 54.61 0)
+		(at 134.62 55.88 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2541,7 +3023,7 @@
 		(fields_autoplaced yes)
 		(uuid "690a99b4-72ba-4b23-9684-ed869ab3d7b3")
 		(property "Reference" "LUMIERE1"
-			(at 92.71 46.99 0)
+			(at 134.62 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2549,7 +3031,7 @@
 			)
 		)
 		(property "Value" "SW_Push"
-			(at 92.71 49.53 0)
+			(at 134.62 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2557,7 +3039,7 @@
 			)
 		)
 		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm"
-			(at 92.71 49.53 0)
+			(at 134.62 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2566,7 +3048,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 92.71 49.53 0)
+			(at 134.62 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2575,7 +3057,7 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
-			(at 92.71 54.61 0)
+			(at 134.62 55.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2600,7 +3082,7 @@
 	)
 	(symbol
 		(lib_id "Device:RotaryEncoder_Switch_MP")
-		(at 88.9 161.29 0)
+		(at 106.68 175.26 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2609,7 +3091,7 @@
 		(fields_autoplaced yes)
 		(uuid "69bd4e87-bc02-46cd-827b-d6dffc5fa76a")
 		(property "Reference" "REGLER_HEURE1"
-			(at 88.9 151.13 0)
+			(at 106.68 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2617,7 +3099,7 @@
 			)
 		)
 		(property "Value" "RotaryEncoder_Switch_MP"
-			(at 88.9 153.67 0)
+			(at 106.68 167.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2625,7 +3107,7 @@
 			)
 		)
 		(property "Footprint" "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm_MountingHoles"
-			(at 85.09 157.226 0)
+			(at 102.87 171.196 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2634,7 +3116,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 88.9 173.99 0)
+			(at 106.68 187.96 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2643,7 +3125,7 @@
 			)
 		)
 		(property "Description" "Rotary encoder, dual channel, incremental quadrate outputs, with switch and MP Pin"
-			(at 88.9 176.53 0)
+			(at 106.68 190.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2679,8 +3161,74 @@
 		)
 	)
 	(symbol
+		(lib_id "power:VBUS")
+		(at 82.55 20.32 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7ad4ceef-cf83-4e8a-8164-9a4387184184")
+		(property "Reference" "#PWR06"
+			(at 82.55 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VBUS"
+			(at 82.55 15.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 82.55 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 82.55 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
+			(at 82.55 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0ca5d9c7-8d54-4b1a-ac07-fff48891774c")
+		)
+		(instances
+			(project "reveil"
+				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
+					(reference "#PWR06")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:RotaryEncoder_Switch_MP")
-		(at 44.45 157.48 270)
+		(at 35.56 170.18 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2688,25 +3236,25 @@
 		(dnp no)
 		(uuid "a32343c7-aa20-4be2-959e-ff7ef9b0ad86")
 		(property "Reference" "REGLER_ALARME1"
-			(at 52.324 168.656 90)
+			(at 44.196 162.052 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Value" "RotaryEncoder_Switch_MP"
-			(at 52.324 171.196 90)
+			(at 44.196 159.512 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Footprint" "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm_MountingHoles"
-			(at 48.514 153.67 0)
+			(at 31.75 166.116 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2715,7 +3263,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 31.75 157.48 0)
+			(at 35.56 182.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2724,7 +3272,7 @@
 			)
 		)
 		(property "Description" "Rotary encoder, dual channel, incremental quadrate outputs, with switch and MP Pin"
-			(at 29.21 157.48 0)
+			(at 35.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3090,6 +3638,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Motor:Motor_DC")
+		(at 228.6 97.79 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "cb504b5c-9916-4c9a-a306-0565a6fb8fda")
+		(property "Reference" "M1"
+			(at 233.68 99.0599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Motor_DC"
+			(at 233.68 101.5999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 228.6 100.076 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 228.6 100.076 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "DC Motor"
+			(at 228.6 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "09a72eb3-5afa-4fc8-bd9e-f44888fa2465")
+		)
+		(pin "1"
+			(uuid "344bf145-5b33-480e-9237-e77a8747dc9e")
+		)
+		(instances
+			(project ""
+				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
+					(reference "M1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Switch:SW_SPDT")
 		(at 59.69 158.75 0)
 		(unit 1)
@@ -3162,7 +3780,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 34.29 160.02 0)
+		(at 35.56 180.34 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3171,7 +3789,7 @@
 		(fields_autoplaced yes)
 		(uuid "e53382e7-c8d5-48d6-bb79-46463923b1d4")
 		(property "Reference" "#PWR09"
-			(at 34.29 166.37 0)
+			(at 35.56 186.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3180,7 +3798,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 34.29 165.1 0)
+			(at 35.56 185.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3188,7 +3806,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 34.29 160.02 0)
+			(at 35.56 180.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3197,7 +3815,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 34.29 160.02 0)
+			(at 35.56 180.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3206,7 +3824,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 34.29 160.02 0)
+			(at 35.56 180.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)

@@ -1517,7 +1517,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "power:VCC"
+		(symbol "power:VBUS"
 			(power)
 			(pin_numbers
 				(hide yes)
@@ -1538,7 +1538,7 @@
 					(hide yes)
 				)
 			)
-			(property "Value" "VCC"
+			(property "Value" "VBUS"
 				(at 0 3.556 0)
 				(effects
 					(font
@@ -1564,7 +1564,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(property "Description" "Power symbol creates a global label with name \"VBUS\""
 				(at 0 0 0)
 				(effects
 					(font
@@ -1582,7 +1582,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "VCC_0_1"
+			(symbol "VBUS_0_1"
 				(polyline
 					(pts
 						(xy -0.762 1.27) (xy 0 2.54)
@@ -1620,7 +1620,7 @@
 					)
 				)
 			)
-			(symbol "VCC_1_1"
+			(symbol "VBUS_1_1"
 				(pin power_in line
 					(at 0 0 90)
 					(length 0)
@@ -2778,7 +2778,7 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VCC")
+		(lib_id "power:VBUS")
 		(at 71.12 67.31 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2786,8 +2786,8 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "5ecfa9ce-fe8e-4c06-8078-34468ff00b96")
-		(property "Reference" "#PWR06"
+		(uuid "5613bec8-ad8e-4fd2-befc-4e3b1f9640e7")
+		(property "Reference" "#PWR03"
 			(at 71.12 71.12 0)
 			(effects
 				(font
@@ -2796,7 +2796,7 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "VCC"
+		(property "Value" "VBUS"
 			(at 71.12 62.23 0)
 			(effects
 				(font
@@ -2822,7 +2822,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
 			(at 71.12 67.31 0)
 			(effects
 				(font
@@ -2832,12 +2832,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "6f498da8-b34f-41a2-a454-30731dd5fd90")
+			(uuid "2ceac72b-665e-4979-81b7-d26604e48250")
 		)
 		(instances
-			(project ""
+			(project "reveil"
 				(path "/6015885c-867c-4e88-9a3e-de8167bfed74/9487cf58-7cf7-48e9-978c-ddf22de806a0"
-					(reference "#PWR06")
+					(reference "#PWR03")
 					(unit 1)
 				)
 			)
@@ -2914,7 +2914,7 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VCC")
+		(lib_id "power:VBUS")
 		(at 83.82 73.66 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2922,7 +2922,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "b73f003f-5299-4bed-bcaa-63b04c5c360a")
+		(uuid "c5eeae57-9e6d-4d14-b90d-6c3b65a36f54")
 		(property "Reference" "#PWR05"
 			(at 83.82 77.47 0)
 			(effects
@@ -2932,7 +2932,7 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "VCC"
+		(property "Value" "VBUS"
 			(at 83.82 68.58 0)
 			(effects
 				(font
@@ -2958,7 +2958,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
 			(at 83.82 73.66 0)
 			(effects
 				(font
@@ -2968,10 +2968,10 @@
 			)
 		)
 		(pin "1"
-			(uuid "18154be4-094b-4a5b-994f-3f5dc1317cfe")
+			(uuid "4083e965-f2d1-4338-917f-73761cac3660")
 		)
 		(instances
-			(project ""
+			(project "reveil"
 				(path "/6015885c-867c-4e88-9a3e-de8167bfed74/9487cf58-7cf7-48e9-978c-ddf22de806a0"
 					(reference "#PWR05")
 					(unit 1)
