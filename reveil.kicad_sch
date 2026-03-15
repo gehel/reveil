@@ -5863,9 +5863,9 @@
 		(lib_id "Graphic:Logo_Open_Hardware_Small")
 		(at 29.21 149.86 0)
 		(unit 1)
-		(exclude_from_sim yes)
-		(in_bom no)
-		(on_board no)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "491b5c93-84b9-4927-ba7b-1eb70899091b")
@@ -5887,7 +5887,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Symbol:OSHW-Logo_11.4x12mm_SilkScreen"
 			(at 29.21 149.86 0)
 			(effects
 				(font
