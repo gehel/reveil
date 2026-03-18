@@ -5803,7 +5803,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_BarrelJack:BarrelJack_Wuerth_6941xx301002"
 			(at 36.83 121.666 0)
 			(effects
 				(font
