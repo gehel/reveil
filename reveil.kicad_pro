@@ -226,7 +226,12 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      [
+        "pin_to_pin|825500|965200|a443a146-f7f0-4040-ab72-f5ad4b3525a3|a87baaac-1d1e-4a9f-9424-206ed49d0bb6|/6015885c-867c-4e88-9a3e-de8167bfed74|/6015885c-867c-4e88-9a3e-de8167bfed74|/6015885c-867c-4e88-9a3e-de8167bfed74",
+        ""
+      ]
+    ],
     "meta": {
       "version": 0
     },
@@ -451,7 +456,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "réveil.kicad_pro",
+    "filename": "reveil.kicad_pro",
     "version": 3
   },
   "net_settings": {
