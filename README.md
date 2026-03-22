@@ -96,7 +96,28 @@ adafruit_max7219
 Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode stockage USB).
 
 ## TODO
-- [ ] Créer un script de déploiement pour automatiser la copie du firmware et des bibliothèques sur le Pico.
+
+### Structure du firmware
+- [ ] Séparer `code.py` en modules : `display.py`, `encoder.py`, `alarm.py`, `backlight.py`
+- [ ] Isoler la logique métier des appels hardware pour permettre les tests sans matériel
+
+### Déploiement (Makefile + mpremote)
+- [ ] Ajouter `mpremote` et `circup` aux dépendances dev dans `firmware/requirements.txt`
+- [ ] Créer un `Makefile` avec les cibles :
+  - `make deploy` — copie `code.py` et `lib/` sur le Pico via `mpremote`
+  - `make deps` — installe les dépendances CircuitPython via `circup`
+  - `make test-unit` — lance les tests unitaires sur l'hôte
+  - `make test-integration` — lance les tests d'intégration sur le Pico via `mpremote run`
+
+### Tests unitaires (sur hôte)
+- [ ] Mettre en place `pytest`
+- [ ] Écrire des stubs pour les modules CircuitPython (`board`, `busio`, `digitalio`, `adafruit_max7219`)
+- [ ] Écrire les tests unitaires pour la logique métier (alarme, encodeurs, extinction automatique)
+
+### Tests d'intégration (sur Pico)
+- [ ] Ajouter `adafruit_unittest` aux dépendances
+- [ ] Écrire les tests d'intégration pour chaque composant hardware
+- [ ] Intégrer l'exécution via `mpremote run` dans le `Makefile`
 
 ## Licence
 
