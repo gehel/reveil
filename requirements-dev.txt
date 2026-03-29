@@ -1,0 +1,6 @@
+adafruit-blinka
+adafruit-circuitpython-max7219
+circup
+circuitpython-tool
+pytest
+ruff
