@@ -27,8 +27,8 @@ Réveil électronique custom conçu pour les personnes sourdes ou malentendantes
 | Potentiomètre | Réglage de la luminosité des affichages 7-segments |
 
 ### Alarme
-- **LED** clignotante
-- **Moteur DC** piloté via un MOSFET **IRF510** pour faire vibrer le lit
+- **LED** blanche (D1) clignotante, pilotée via un transistor Q1 (2N3904)
+- **Moteur DC** piloté via un MOSFET **IRF540N** (Q2) pour faire vibrer le lit
 
 ### Alimentation
 - Port **USB** du Raspberry Pi Pico
@@ -44,14 +44,18 @@ Les fichiers source KiCad sont à la racine du projet :
 | `heure_alarme.kicad_sch` | Feuille *Heure et Alarme* |
 | `date.kicad_sch` | Feuille *Date* |
 | `reveil.kicad_pcb` | Layout PCB |
+| `fp-lib-table` | Table de librairies de footprints du projet (référence `reveil.pretty/`) |
+| `reveil.pretty/` | Librairie locale de footprints corrigés (overrides de footprints système erronés — voir TODO) |
 
 ### Générer les fichiers Gerber avec KiBot
 
-Les fichiers de fabrication (Gerber, BOM, positions) sont générés via [KiBot](https://github.com/INTI-CMNB/KiBot) à partir de `config.kibot.yaml`.
+Les fichiers de fabrication (Gerber, BOM, positions) sont générés via [KiBot](https://github.com/INTI-CMNB/KiBot) à partir de `config.kibot.yaml`. `kibot` nécessite `wxPython` (pas de wheel précompilé sur toutes les plateformes) — utiliser le conteneur Docker de la CI plutôt qu'un `pip install` local :
 
 ```bash
-kibot -c config.kibot.yaml
+docker run --rm -v "$PWD":/mnt -w /mnt ghcr.io/inti-cmnb/kicad9_auto_full:latest kibot -c config.kibot.yaml
 ```
+
+`kicad-cli` (ERC/DRC en ligne de commande) est fourni par l'installation KiCad elle-même — via le snap, il est accessible en `/snap/bin/kicad.kicad-cli` (pas `kicad-cli` directement sur le PATH).
 
 Les fichiers générés se trouvent dans le dossier `Generated/`. Les fichiers prêts pour JLCPCB sont dans `jlcpcb/`.
 
@@ -77,7 +81,7 @@ Les fichiers générés se trouvent dans le dossier `Generated/`. Les fichiers p
 | GP15 | Bouton allumage affichages | Signal |
 | GP16 | Bouton arrêt alarme | Signal |
 | GP17 | LED alarme | Signal |
-| GP18 | MOSFET IRF510 (moteur DC) | Gate |
+| GP18 | MOSFET IRF540N (moteur DC) | Gate |
 | GP19 | Interrupteur SPDT alarme | Signal |
 | GP26 | Potentiomètre luminosité | ADC |
 
@@ -96,6 +100,16 @@ adafruit_max7219
 Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode stockage USB).
 
 ## TODO
+
+### Problèmes matériels connus
+- [x] Court-circuit GND/+3V3 via l'interrupteur `ALARME_ON_OFF1` : le footprint système (`Button_Switch_THT:SW_Slide-03_Wuerth-WS-SLTV...`) avait les pads 1 et 2 physiquement inversés par rapport au composant monté. Corrigé via une librairie locale `reveil.pretty/` (pads 1/2 échangés) + `fp-lib-table`. Vérifié par mesure au multimètre, ERC et DRC (voir historique git).
+- [x] LED D1 toujours allumée faiblement au lieu de clignoter : la base de Q1 (2N3904, driver de D1) était câblée directement sur GP17 sans résistance série, empêchant GP17 d'atteindre un état haut propre (chargé par la jonction base-émetteur). Corrigé dans KiCad : ajout de **R4 = 1.5 kΩ** en série sur la base, et **R3 = 100 Ω** (au lieu de 47 kΩ, qui aurait quasi éteint la LED) pour ~16 mA dans D1 (LED blanche, Vf≈3.2V supposé — pas de référence/datasheet exacte pour D1, à vérifier si besoin de précision). Vérifié par ERC/DRC.
+  - [ ] **Bloquant pour tester la LED** : le PCB physique existant n'a pas ces corrections (footprint switch + R3/R4) — il faut ressouder à la main (bodge) ou fabriquer un nouveau PCB avant de pouvoir tester `code.py` avec `board.LED` remplacé par `board.GP17`. `firmware/code.py` a été remis à `board.LED` (LED embarquée du Pico) en attendant.
+- [ ] **À vérifier — pilotage de grille de Q2 (IRF540N, moteur DC)** : topologie de câblage correcte (Gate←GP18, Drain→moteur(-), Source→GND, moteur(+)→VBUS ; vérifié via l'analyse du netlist), mais **pas corrigé, à confirmer avant de faire tourner le moteur** :
+  - GP18 pilote la grille de Q2 directement en 3.3V, sans résistance de grille ni driver dédié.
+  - L'IRF540N n'est **pas un MOSFET "logic-level"** : son Rds(on) nominal (~44-77 mΩ) est spécifié à Vgs=10V. À 3.3V (Vgs proche du seuil typique 2-4V du composant), le MOSFET risque de ne pas être pleinement enhancé → Rds(on) effectif bien plus élevé que la valeur datasheet → échauffement de Q2 et/ou sous-alimentation du moteur.
+  - Pas de résistance de grille série non plus (moins critique électriquement pour un MOSFET qu'un BJT, mais bonne pratique pour limiter les transitoires de commutation).
+  - Pistes de correction possibles (non appliquées) : remplacer Q2 par un MOSFET logic-level (ex. IRLZ44N, AO3400), ou ajouter un étage driver de grille.
 
 ### Structure du firmware
 - [ ] Séparer `code.py` en modules : `display.py`, `encoder.py`, `alarm.py`, `backlight.py`
