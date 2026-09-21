@@ -4290,6 +4290,16 @@
 	)
 	(wire
 		(pts
+			(xy 176.53 143.51) (xy 177.8 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "41fcffc3-d01c-48be-a82a-676228a43f91")
+	)
+	(wire
+		(pts
 			(xy 99.06 147.32) (xy 99.06 149.86)
 		)
 		(stroke
@@ -4790,94 +4800,6 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 143.51) (xy 177.8 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "41fcffc3-d01c-48be-a82a-676228a43f91")
-	)
-	(wire
-		(pts
-			(xy 185.42 143.51) (xy 186.69 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e4ae6bed-b506-4507-b159-4bfcc0981e34")
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 181.61 143.51 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "7d6611aa-5d73-47ae-89ea-dbbe3d63fb74")
-		(property "Reference" "R4"
-			(at 181.61 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1.5K"
-			(at 181.61 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
-			(at 181.61 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 181.61 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 181.61 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f6ff1da2-8e57-46d6-bd8b-4ef358701ae1")
-		)
-		(pin "2"
-			(uuid "a1c2db67-f8db-44a8-8fea-f8c60551b39a")
-		)
-		(instances
-			(project ""
-				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
-					(reference "R4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(wire
-		(pts
 			(xy 246.38 76.2) (xy 246.38 77.47)
 		)
 		(stroke
@@ -5075,6 +4997,16 @@
 			(type default)
 		)
 		(uuid "dd9594b1-9ba1-4ce4-ac60-6ac9ea05e28b")
+	)
+	(wire
+		(pts
+			(xy 185.42 143.51) (xy 186.69 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e4ae6bed-b506-4507-b159-4bfcc0981e34")
 	)
 	(wire
 		(pts
@@ -8413,6 +8345,74 @@
 			(project ""
 				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
 					(reference "M1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 181.61 143.51 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e6c51009-4c75-4e3f-88c6-aa9f79244c36")
+		(property "Reference" "R4"
+			(at 181.61 137.16 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1.5K"
+			(at 181.61 139.7 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 181.61 145.288 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 181.61 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 181.61 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "0ab7fcb7-8c21-4fce-b09b-af382384db43")
+		)
+		(pin "1"
+			(uuid "c7e25c75-ea31-44e0-a915-716eaad98e38")
+		)
+		(instances
+			(project "reveil"
+				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
+					(reference "R4")
 					(unit 1)
 				)
 			)
