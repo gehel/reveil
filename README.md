@@ -101,13 +101,15 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
 - [ ] Séparer `code.py` en modules : `display.py`, `encoder.py`, `alarm.py`, `backlight.py`
 - [ ] Isoler la logique métier des appels hardware pour permettre les tests sans matériel
 
-### Déploiement (Makefile + mpremote)
-- [ ] Ajouter `mpremote` et `circup` aux dépendances dev dans `firmware/requirements.txt`
-- [ ] Créer un `Makefile` avec les cibles :
-  - `make deploy` — copie `code.py` et `lib/` sur le Pico via `mpremote`
+### Déploiement (Makefile)
+- [x] Créer un `Makefile` (`firmware/Makefile`) avec les cibles :
+  - `make install-circuitpython` — flashe CircuitPython sur le Pico
+  - `make deploy` — copie `code.py` (et `lib/` si présent) sur le volume `CIRCUITPY` monté par l'hôte (pas `mpremote fs cp`, qui échoue en lecture seule sur CircuitPython)
   - `make deps` — installe les dépendances CircuitPython via `circup`
-  - `make test-unit` — lance les tests unitaires sur l'hôte
-  - `make test-integration` — lance les tests d'intégration sur le Pico via `mpremote run`
+  - [ ] `make test-unit` — lance les tests unitaires sur l'hôte (cible stub, pas encore exécutable)
+  - [ ] `make test-integration` — lance les tests d'intégration sur le Pico via `mpremote run` (cible stub, pas encore exécutable)
+- [x] Séparer les dépendances : `firmware/requirements.txt` (librairies CircuitPython installées sur le Pico via `circup`, ce n'est pas un fichier pip) vs `requirements-dev.txt` à la racine (outillage hôte : `circup`, stubs d'autocomplete ; `kibot` nécessite Docker, voir commentaire dans le fichier)
+- [ ] Envisager une migration vers Poetry (ou un outil équivalent) pour `requirements-dev.txt` si le besoin de lockfile reproductible ou de gestion d'environnement plus poussée se fait sentir — pas nécessaire pour l'instant (projet hobby solo, peu de dépendances)
 
 ### Tests unitaires (sur hôte)
 - [ ] Mettre en place `pytest`
