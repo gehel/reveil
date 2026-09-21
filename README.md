@@ -28,7 +28,7 @@ Réveil électronique custom conçu pour les personnes sourdes ou malentendantes
 
 ### Alarme
 - **LED** blanche (D1) clignotante, pilotée via un transistor Q1 (2N3904)
-- **Moteur DC** piloté via un MOSFET **IRF540N** (Q2) pour faire vibrer le lit
+- **Moteur DC** piloté via un MOSFET (Q2) pour faire vibrer le lit — **IRF510** sur la carte physique, schéma KiCad pas encore aligné (voir TODO)
 
 ### Alimentation
 - Port **USB** du Raspberry Pi Pico
@@ -81,7 +81,7 @@ Les fichiers générés se trouvent dans le dossier `Generated/`. Les fichiers p
 | GP15 | Bouton allumage affichages | Signal |
 | GP16 | Bouton arrêt alarme | Signal |
 | GP17 | LED alarme | Signal |
-| GP18 | MOSFET IRF540N (moteur DC) | Gate |
+| GP18 | MOSFET moteur DC (Q2) | Gate |
 | GP19 | Interrupteur SPDT alarme | Signal |
 | GP26 | Potentiomètre luminosité | ADC |
 
@@ -105,9 +105,10 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
 - [x] Court-circuit GND/+3V3 via l'interrupteur `ALARME_ON_OFF1` : le footprint système (`Button_Switch_THT:SW_Slide-03_Wuerth-WS-SLTV...`) avait les pads 1 et 2 physiquement inversés par rapport au composant monté. Corrigé via une librairie locale `reveil.pretty/` (pads 1/2 échangés) + `fp-lib-table`. Vérifié par mesure au multimètre, ERC et DRC (voir historique git).
 - [x] LED D1 toujours allumée faiblement au lieu de clignoter : la base de Q1 (2N3904, driver de D1) était câblée directement sur GP17 sans résistance série, empêchant GP17 d'atteindre un état haut propre (chargé par la jonction base-émetteur). Corrigé dans KiCad : ajout de **R4 = 1.5 kΩ** en série sur la base, et **R3 = 100 Ω** (au lieu de 47 kΩ, qui aurait quasi éteint la LED) pour ~16 mA dans D1 (LED blanche, Vf≈3.2V supposé — pas de référence/datasheet exacte pour D1, à vérifier si besoin de précision). Vérifié par ERC/DRC.
   - [ ] **Bloquant pour tester la LED** : le PCB physique existant n'a pas ces corrections (footprint switch + R3/R4) — il faut ressouder à la main (bodge) ou fabriquer un nouveau PCB avant de pouvoir tester `code.py` avec `board.LED` remplacé par `board.GP17`. `firmware/code.py` a été remis à `board.LED` (LED embarquée du Pico) en attendant.
-- [ ] **À vérifier — pilotage de grille de Q2 (IRF540N, moteur DC)** : topologie de câblage correcte (Gate←GP18, Drain→moteur(-), Source→GND, moteur(+)→VBUS ; vérifié via l'analyse du netlist), mais **pas corrigé, à confirmer avant de faire tourner le moteur** :
+- [ ] **Décalage schéma/carte physique — Q2 (moteur DC)** : le schéma KiCad indique un **IRF540N**, mais le MOSFET réellement monté sur le PCB physique est un **IRF510**. Le schéma (et donc le BOM) doit être mis à jour pour refléter la pièce réelle — pas encore fait.
+- [ ] **À vérifier — pilotage de grille de Q2 (moteur DC)** : topologie de câblage correcte (Gate←GP18, Drain→moteur(-), Source→GND, moteur(+)→VBUS ; vérifié via l'analyse du netlist), mais **pas corrigé, à confirmer avant de faire tourner le moteur** :
   - GP18 pilote la grille de Q2 directement en 3.3V, sans résistance de grille ni driver dédié.
-  - L'IRF540N n'est **pas un MOSFET "logic-level"** : son Rds(on) nominal (~44-77 mΩ) est spécifié à Vgs=10V. À 3.3V (Vgs proche du seuil typique 2-4V du composant), le MOSFET risque de ne pas être pleinement enhancé → Rds(on) effectif bien plus élevé que la valeur datasheet → échauffement de Q2 et/ou sous-alimentation du moteur.
+  - Ni l'IRF540N (schéma) ni l'IRF510 (carte physique) ne sont des MOSFET **"logic-level"** : leur Rds(on) nominal est spécifié à Vgs=10V (IRF510 : ~0.54Ω max ; IRF540N : ~44-77 mΩ). À 3.3V (Vgs proche du seuil typique 2-4V de ces composants), le MOSFET risque de ne pas être pleinement enhancé → Rds(on) effectif bien plus élevé que la valeur datasheet → échauffement de Q2 et/ou sous-alimentation du moteur. S'applique donc quel que soit lequel des deux est effectivement utilisé.
   - Pas de résistance de grille série non plus (moins critique électriquement pour un MOSFET qu'un BJT, mais bonne pratique pour limiter les transitoires de commutation).
   - Pistes de correction possibles (non appliquées) : remplacer Q2 par un MOSFET logic-level (ex. IRLZ44N, AO3400), ou ajouter un étage driver de grille.
 
