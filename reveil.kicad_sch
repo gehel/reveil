@@ -4790,13 +4790,91 @@
 	)
 	(wire
 		(pts
-			(xy 184.15 143.51) (xy 186.69 143.51)
+			(xy 176.53 143.51) (xy 177.8 143.51)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "adc63cc6-7d70-420e-b32d-9b7bf92bb5b9")
+		(uuid "41fcffc3-d01c-48be-a82a-676228a43f91")
+	)
+	(wire
+		(pts
+			(xy 185.42 143.51) (xy 186.69 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e4ae6bed-b506-4507-b159-4bfcc0981e34")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 181.61 143.51 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7d6611aa-5d73-47ae-89ea-dbbe3d63fb74")
+		(property "Reference" "R4"
+			(at 181.61 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1.5K"
+			(at 181.61 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 181.61 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 181.61 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 181.61 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f6ff1da2-8e57-46d6-bd8b-4ef358701ae1")
+		)
+		(pin "2"
+			(uuid "a1c2db67-f8db-44a8-8fea-f8c60551b39a")
+		)
+		(instances
+			(project ""
+				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(wire
 		(pts
@@ -5598,7 +5676,7 @@
 	)
 	(global_label "LED"
 		(shape input)
-		(at 184.15 143.51 180)
+		(at 176.53 143.51 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -5608,7 +5686,7 @@
 		)
 		(uuid "9042871e-60c9-4a47-8ee2-948ec3ff6373")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 177.7177 143.51 0)
+			(at 170.0977 143.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6347,7 +6425,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R"
+		(property "Value" "100"
 			(at 196.85 133.3499 0)
 			(effects
 				(font
