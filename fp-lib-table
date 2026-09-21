@@ -1,0 +1,4 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "reveil")(type "KiCad")(uri "${KIPRJMOD}/reveil.pretty")(options "")(descr "Footprints corrigés spécifiques à ce projet (overrides de librairies système avec pinout erroné)"))
+)
