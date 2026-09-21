@@ -1,0 +1,30 @@
+# Outillage hôte (dev machine), sans rapport avec firmware/requirements.txt
+# qui liste les librairies CircuitPython installées SUR le Pico via circup.
+# Installation : pip install -r requirements-dev.txt (dans .venv/)
+
+# kibot (génération des sorties de fabrication KiCad : gerbers, BOM, DRC/ERC...)
+# n'est PAS installable via pip seul ici : il dépend de wxPython, qui n'a pas
+# de wheel précompilé pour cette plateforme. Utiliser le conteneur Docker
+# officiel (le même que la CI, cf. .github/workflows/workflow.yml) :
+#   docker run --rm -v "$PWD":/mnt -w /mnt ghcr.io/inti-cmnb/kicad9_auto_full:latest kibot -c config.kibot.yaml
+
+# Déploiement des librairies CircuitPython sur le Pico (make deps)
+circup==3.0.4
+
+# Stubs / support autocomplete pour éditer firmware/code.py
+circuitpython-stubs==10.1.4
+Adafruit-Blinka==9.0.0
+adafruit-circuitpython-max7219==1.5.19
+adafruit-circuitpython-busdevice==5.2.15
+adafruit-circuitpython-connectionmanager==3.1.6
+adafruit-circuitpython-framebuf==1.6.10
+adafruit-circuitpython-requests==4.1.15
+adafruit-circuitpython-typing==1.12.3
+Adafruit-PlatformDetect==3.88.0
+Adafruit-PureIO==1.1.11
+circuitpython-ruhrohrotaryio==1.0
+binho-host-adapter==0.1.6
+pyftdi==0.57.1
+pyserial==3.5
+pyusb==1.3.1
+sysv_ipc==1.2.0
