@@ -110,6 +110,11 @@ fp-info-cache
 *.xml
 *.csv
 
+### Python (firmware unit tests, firmware/tests/)
+__pycache__/
+*.pyc
+.pytest_cache/
+
 ### Misc
 Generated
 bom

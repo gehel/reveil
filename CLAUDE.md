@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-"Réveil pour sourd" — a custom electronic alarm clock for deaf/hard-of-hearing users. Instead of sound, it wakes the user with a blinking LED and a vibrating DC motor. This is primarily a **KiCad hardware project** (schematic + PCB) with a small **CircuitPython** firmware component for a Raspberry Pi Pico W (RP2040). The project is in early development; see the README's TODO section for planned firmware architecture (it does not exist yet — `firmware/code.py` is currently a short LED-blink stub, not the full application described in the hardware docs). Hardware bring-up is tested with throwaway scripts written directly into `firmware/code.py` and deployed via `make deploy` (see Firmware deployment below); once verified, `code.py` is reset back to the blink stub and the test script is not committed — only the underlying hardware/schematic fix is.
+"Réveil pour sourd" — a custom electronic alarm clock for deaf/hard-of-hearing users. Instead of sound, it wakes the user with a blinking LED and a vibrating DC motor. This is primarily a **KiCad hardware project** (schematic + PCB) with a growing **CircuitPython** firmware component for a Raspberry Pi Pico W (RP2040). The project is in early development; see the README's TODO section and "Mode de fonctionnement" for what's implemented so far (currently: DATE/ANNEE displays plus the REGLAGE_DATE encoder's date-setting cycle) versus what's still planned (HEURE/ALARME displays, the other two encoders, brightness, alarm, backlight/auto-off). Hardware bring-up for parts not yet wired into the real firmware is still tested with throwaway scripts written directly into `firmware/code.py` and deployed via `make deploy` (see Firmware deployment below); once verified, the underlying hardware/schematic fix is committed but the throwaway script itself is not — only committed once it becomes real, tested firmware. **Tests are written before the corresponding implementation** (see Firmware testing below) — this is an explicit, repeated user preference, not a one-off.
 
 Hardware summary: RP2040 (Pico W) driving two MAX7219 8x7-segment display drivers (4 displays: date, year, time, alarm time), three rotary encoders (date/year, time, alarm), two push buttons (alarm stop, display wake), an SPDT switch (alarm enable), a potentiometer (display brightness via ADC), an LED, and a DC vibration motor switched through Q2 — an IRLB8721PbF logic-level MOSFET (with a 100Ω series gate resistor, R5) in the schematic/PCB, though the physical board still has the original non-logic-level IRF510 and no R5 pending rework. Full GPIO pinout is documented in `README.md`.
 
@@ -13,10 +13,13 @@ Hardware summary: RP2040 (Pico W) driving two MAX7219 8x7-segment display driver
 - `reveil.kicad_pro` / `reveil.kicad_sch` — root KiCad project and schematic
 - `heure_alarme.kicad_sch`, `date.kicad_sch` — schematic sub-sheets ("Heure et Alarme", "Date")
 - `reveil.kicad_pcb` — PCB layout
-- `firmware/code.py` — CircuitPython firmware entry point (stub; see TODO below)
+- `firmware/code.py` — CircuitPython firmware entry point; orchestrates hardware (encoder input, RTC, display refresh) around the pure logic in `firmware/reveil/`. Must be named `code.py` (CircuitPython convention) — this collides with Python's stdlib `code` module if `firmware/` ever lands on `sys.path` (e.g. via `python -m pytest`), which is exactly why the testable modules live in the separate `firmware/reveil/` directory instead of next to `code.py` (see Firmware testing below)
+- `firmware/reveil/` — firmware logic, deployed by flattening its contents into the CIRCUITPY root (CircuitPython only searches its root and `lib/`, not arbitrary subdirectories): `display.py` (`Afficheurs`, MAX7219 driving), `encoder.py` (`Encodeur`, rotary encoder + button), `reglage_date.py` (pure date-setting state machine, no CircuitPython imports). `display.py`/`encoder.py` split hardware construction into a `depuis_broches()` classmethod so the rest of the class can be unit-tested with injected fake objects instead of real `board`/`busio`/`digitalio`/`rotaryio`
+- `firmware/tests/` — `pytest` unit tests for everything in `firmware/reveil/` (see Firmware testing below)
+- `firmware/pytest.ini` — sets `pythonpath = reveil` so tests import `firmware/reveil/*.py` modules directly without needing `firmware/` (and thus `code.py`) on `sys.path`
 - `firmware/requirements.txt` — CircuitPython library dependencies (installed into the Pico's `lib/` folder via `circup`, not a host `pip` requirements file)
-- `firmware/Makefile` — firmware deployment tooling (`make deploy`, `make install-circuitpython`, `make deps`; see Firmware deployment below)
-- `requirements-dev.txt` — host-side tooling for `.venv/` (`circup`, CircuitPython autocomplete stubs); distinct from `firmware/requirements.txt`
+- `firmware/Makefile` — firmware deployment and test tooling (`make deploy`, `make install-circuitpython`, `make deps`, `make test-unit`; see Firmware deployment and Firmware testing below)
+- `requirements-dev.txt` — host-side tooling for `.venv/` (`circup`, `pytest`, CircuitPython autocomplete stubs); distinct from `firmware/requirements.txt`
 - `config.kibot.yaml` — [KiBot](https://github.com/INTI-CMNB/KiBot) config for generating fabrication outputs (Gerbers, BOM, position files, 3D exports, board views) from the KiCad source
 - `Generated/` — KiBot output (gerbers, BOM, renders, reports, browsable HTML); regenerated by KiBot, not hand-edited
 - `jlcpcb/` — JLCPCB-ready production files (gerbers, BOM/CPL CSVs) produced via the KiBot `JLCPCB` import
@@ -43,12 +46,25 @@ A Python venv exists at `.venv/` (`pip install -r requirements-dev.txt`) with Ci
 ```bash
 cd firmware
 make install-circuitpython   # flashes the latest stable CircuitPython UF2 (device must be in BOOTSEL mode, volume RPI-RP2)
-make deploy                   # copies code.py (and lib/ if present) to the mounted CIRCUITPY volume
+make deploy                   # copies code.py, flattens reveil/*.py, and copies lib/ (if present) to the mounted CIRCUITPY volume
 make deps                     # installs firmware/requirements.txt into the Pico's lib/ via circup
 ```
 
-`make deploy` auto-detects the `CIRCUITPY` mount via `findmnt` and does a plain `cp` — it does not use `mpremote fs cp`, which fails against CircuitPython's read-only-to-host filesystem semantics. `make test-unit` and `make test-integration` are stub targets (see TODO below — the underlying test suites don't exist yet).
+`make deploy` auto-detects the `CIRCUITPY` mount via `findmnt` and does a plain `cp` — it does not use `mpremote fs cp`, which fails against CircuitPython's read-only-to-host filesystem semantics. `make test-integration` is a stub target (see TODO below — the on-device integration test suite doesn't exist yet).
+
+## Firmware testing
+
+**Tests are written before the implementation, not after** — when adding or changing firmware logic, write the failing test first (confirm it actually fails — collection errors count), then write the code to make it pass. This applies to every module under `firmware/reveil/`.
+
+```bash
+cd firmware
+make test-unit      # equivalent to: pytest tests/
+```
+
+Run `pytest` directly, not `python -m pytest` — `-m` prepends the current directory to `sys.path`, and since that directory is `firmware/` (which contains `code.py`), `pdb`'s internal `import code` resolves to `firmware/code.py` instead of the stdlib module and crashes pytest with an `INTERNALERROR`. This is also why `firmware/reveil/` exists as a separate directory from `code.py` in the first place, and why `pytest.ini` points `pythonpath` at `reveil`, not `.`.
+
+Business logic modules (currently `reglage_date.py`) have zero CircuitPython imports and are tested directly. Hardware-wrapper modules (`display.py`, `encoder.py`) are tested by constructing them with fake objects (see `tests/test_display.py`'s `FauxChip`, `tests/test_encoder.py`'s `FausseRotation`/`FauxInterrupteur`) instead of stubbing `board`/`busio`/`digitalio`/`rotaryio`/`adafruit_max7219` themselves — real hardware construction is isolated in each class's `depuis_broches()` classmethod, which is not covered by these tests (no Pico available in CI or in this environment). When adding a new hardware-touching module, follow this same split rather than writing CircuitPython stub packages.
 
 ## Notes for future firmware work
 
-The README's TODO section lays out the intended firmware direction — splitting `code.py` into `display.py`, `encoder.py`, `alarm.py`, `backlight.py` modules with hardware logic isolated from business logic, plus `pytest`-based host unit tests (with stubs for `board`/`busio`/`digitalio`/`adafruit_max7219`) and `mpremote`-based on-device integration tests. None of this scaffolding exists yet — if asked to build it, treat the TODO list as the design spec rather than inferring structure from the current stub.
+Still to build, per the README's TODO: `alarm.py` and `backlight.py` (once the alarm and auto-off/brightness features are implemented — extract their logic the same way `reglage_date.py` was extracted, hardware wrapper + pure logic module + tests-first), HEURE/ALARME displays and their encoders, and `mpremote`-based on-device integration tests (`make test-integration` is currently a stub).

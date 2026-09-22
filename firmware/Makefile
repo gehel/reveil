@@ -17,7 +17,7 @@ UF2_TMP := /tmp/circuitpython-$(BOARD).uf2
 help:
 	@echo "Cibles disponibles :"
 	@echo "  make install-circuitpython - flashe la dernière version stable de CircuitPython sur le Pico"
-	@echo "  make deploy                - copie les modules .py du firmware (et lib/ si présent) sur le Pico"
+	@echo "  make deploy                - copie code.py et les modules de reveil/ (aplatis) sur le Pico (et lib/ si présent)"
 	@echo "  make deps                  - installe les librairies CircuitPython via circup"
 	@echo "  make test-unit             - lance les tests unitaires sur l'hôte"
 	@echo "  make test-integration      - lance les tests d'intégration sur le Pico"
@@ -45,12 +45,16 @@ deploy:
 		echo "Volume CIRCUITPY introuvable. Branchez le Pico sous CircuitPython (voir 'make install-circuitpython')."; \
 		exit 1; \
 	fi
-	cp *.py "$(CIRCUITPY_MOUNT)/"
+	cp code.py "$(CIRCUITPY_MOUNT)/code.py"
+	cp reveil/*.py "$(CIRCUITPY_MOUNT)/"
 	@if [ -d lib ]; then cp -r lib "$(CIRCUITPY_MOUNT)/"; fi
 
 deps:
 	$(CIRCUP) install -r requirements.txt
 
+# `pytest` direct (pas `python -m pytest`) : `-m` ajoute le répertoire courant
+# (firmware/, qui contient code.py) en tête de sys.path, ce qui masque le
+# module standard `code` importé par pdb et fait planter pytest.
 test-unit:
 	pytest tests/
 

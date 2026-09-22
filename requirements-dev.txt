@@ -11,6 +11,9 @@
 # Déploiement des librairies CircuitPython sur le Pico (make deps)
 circup==3.0.4
 
+# Tests unitaires de la logique metier du firmware (make test-unit)
+pytest==9.1.1
+
 # Stubs / support autocomplete pour éditer firmware/code.py
 circuitpython-stubs==10.1.4
 Adafruit-Blinka==9.0.0
