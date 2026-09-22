@@ -1,4 +1,10 @@
-"""Pilotage des 4 affichages 7-segments (2x MAX7219) du reveil."""
+"""Pilotage des 4 affichages 7-segments (2x MAX7219) du reveil.
+
+Les annotations de type materiel (adafruit_max7219.bcddigits.BCDDigits,
+microcontroller.Pin) sont en chaines (forward references) : ce module
+ne fait jamais d'import materiel au niveau module (seulement dans
+depuis_broches(), pour l'usage reel), et les annotations ne sont de
+toute facon pas evaluees a l'execution sur CircuitPython."""
 
 BLANC = 15  # code MAX7219 (Code B) pour un digit vide
 
@@ -11,7 +17,12 @@ class Afficheurs:
     parametre (self.heure_alarme ou self.date_annee) : les deux exposent
     la meme mecanique d'ecriture (voir _ecrire_digit)."""
 
-    def __init__(self, chip_heure_alarme, chip_date_annee, luminosite=8):
+    def __init__(
+        self,
+        chip_heure_alarme: "adafruit_max7219.bcddigits.BCDDigits",
+        chip_date_annee: "adafruit_max7219.bcddigits.BCDDigits",
+        luminosite: int = 8,
+    ) -> None:
         """chip_heure_alarme, chip_date_annee : objets exposant .pixel(x, y, bit),
         .show() et .brightness(niveau) (ex. adafruit_max7219.bcddigits.BCDDigits)."""
         self.heure_alarme = chip_heure_alarme
@@ -20,7 +31,7 @@ class Afficheurs:
             chip.brightness(luminosite)
 
     @classmethod
-    def depuis_broches(cls, luminosite=8):
+    def depuis_broches(cls, luminosite: int = 8) -> "Afficheurs":
         """Construit les Afficheurs a partir des broches GPIO reelles du reveil."""
         import board
         import busio
@@ -37,7 +48,7 @@ class Afficheurs:
 
         return cls(chip_heure_alarme, chip_date_annee, luminosite=luminosite)
 
-    def _ecrire_digit(self, chip, pos, valeur_bcd):
+    def _ecrire_digit(self, chip: "adafruit_max7219.bcddigits.BCDDigits", pos: int, valeur_bcd: int) -> None:
         """Ecrit un digit BCD (0-15) a la position physique 'pos' (0 = premier
         digit a gauche de la puce, 7 = dernier a droite).
 
@@ -55,12 +66,19 @@ class Afficheurs:
             chip.pixel(pos, i, valeur_bcd & 0x01)
             valeur_bcd >>= 1
 
-    def regler_luminosite(self, niveau):
+    def regler_luminosite(self, niveau: int) -> None:
         """Applique un niveau de luminosite (0-15) aux deux puces."""
         for chip in (self.heure_alarme, self.date_annee):
             chip.brightness(niveau)
 
-    def afficher_champ(self, chip, depart, valeur, largeur, visible=True):
+    def afficher_champ(
+        self,
+        chip: "adafruit_max7219.bcddigits.BCDDigits",
+        depart: int,
+        valeur: int,
+        largeur: int,
+        visible: bool = True,
+    ) -> None:
         """Affiche 'valeur' sur 'largeur' digits de 'chip' (self.date_annee ou
         self.heure_alarme) a partir de la position physique 'depart' (0 =
         premier digit a gauche ; 0-3 = premier affichage logique de la puce,
@@ -73,12 +91,12 @@ class Afficheurs:
             for pos in range(depart, depart + largeur):
                 self._ecrire_digit(chip, pos, BLANC)
 
-    def afficher_separateur(self, chip, pos, visible=True):
+    def afficher_separateur(self, chip: "adafruit_max7219.bcddigits.BCDDigits", pos: int, visible: bool = True) -> None:
         """Point decimal a la position physique 'pos' de 'chip' (ex. entre
         jour et mois sur DATE, ou entre heures et minutes sur HEURE, au
         format JJ.MM / HH.MM)."""
         chip.pixel(pos, 7, 1 if visible else 0)
 
-    def rafraichir(self):
+    def rafraichir(self) -> None:
         self.date_annee.show()
         self.heure_alarme.show()

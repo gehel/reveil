@@ -2,11 +2,15 @@
 
 Module pur : pas d'import CircuitPython, testable sans stub ni Pico.
 """
+try:
+    from typing import Tuple
+except ImportError:
+    pass
 
 MODES = ("NORMAL", "JOUR", "MOIS", "ANNEE")
 
 
-def jours_dans_mois(mois, annee):
+def jours_dans_mois(mois: int, annee: int) -> int:
     """Nombre de jours dans le mois donne (1-12), annees bissextiles incluses."""
     if mois in (1, 3, 5, 7, 8, 10, 12):
         return 31
@@ -16,12 +20,12 @@ def jours_dans_mois(mois, annee):
     return 29 if bissextile else 28
 
 
-def mode_suivant(mode):
+def mode_suivant(mode: str) -> str:
     """Mode suivant dans le cycle NORMAL -> JOUR -> MOIS -> ANNEE -> NORMAL."""
     return MODES[(MODES.index(mode) + 1) % len(MODES)]
 
 
-def appliquer_rotation(mode, jour, mois, annee, delta):
+def appliquer_rotation(mode: str, jour: int, mois: int, annee: int, delta: int) -> Tuple[int, int, int]:
     """Applique un deplacement d'encodeur (delta) au champ actif selon 'mode'.
 
     Retourne le tuple (jour, mois, annee) mis a jour ; inchange si
@@ -43,7 +47,7 @@ def appliquer_rotation(mode, jour, mois, annee, delta):
     return jour, mois, annee
 
 
-def champs_visibles(mode, clignote):
+def champs_visibles(mode: str, clignote: bool) -> Tuple[bool, bool, bool]:
     """Retourne (visible_jour, visible_mois, visible_annee).
 
     Le champ en cours de reglage suit 'clignote' (pour le faire clignoter

@@ -43,12 +43,12 @@ horloge.datetime = time.struct_time((ANNEE_DEFAUT, 1, 1, 0, 0, 0, 0, 1, -1))
 # L'heure d'alarme n'est pas geree par la RTC (ce n'est pas l'heure
 # courante) : simple valeur locale, reinitialisee elle aussi a chaque
 # demarrage.
-alarme_heures = ALARME_HEURES_DEFAUT
-alarme_minutes = ALARME_MINUTES_DEFAUT
+alarme_heures: int = ALARME_HEURES_DEFAUT
+alarme_minutes: int = ALARME_MINUTES_DEFAUT
 
-mode_date = "NORMAL"
-mode_heure = "NORMAL"
-mode_alarme = "NORMAL"
+mode_date: str = "NORMAL"
+mode_heure: str = "NORMAL"
+mode_alarme: str = "NORMAL"
 print("Reglage date/annee : clic sur REGLAGE_DATE (jour -> mois -> annee -> normal)")
 print("Reglage heure : clic sur REGLAGE_HEURE (heures -> minutes -> normal)")
 print("Reglage alarme : clic sur REGLAGE_ALARME (heures -> minutes -> normal)")
