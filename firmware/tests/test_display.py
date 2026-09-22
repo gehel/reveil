@@ -97,6 +97,19 @@ class TestAfficherChamp:
         assert [heure_alarme.digit_bcd(i) for i in range(4)] == [1, 4, 0, 5]
         assert date_annee.pixels == [[0] * 8 for _ in range(8)]
 
+    def test_heure_et_alarme_ne_se_marchent_pas_dessus(self):
+        # Meme verification que test_deux_champs_distincts_ne_se_marchent_pas_dessus
+        # mais sur la puce heure_alarme (positions 0-3 = HEURE, 4-7 = ALARME) :
+        # c'est exactement la zone (position 4-7) touchee par le bug d'inversion
+        # deja rencontre sur date_annee, jamais testee explicitement ici.
+        afficheurs, heure_alarme, _ = construire()
+        afficheurs.afficher_champ(heure_alarme, 0, 14, 2)  # heure : 14
+        afficheurs.afficher_champ(heure_alarme, 2, 5, 2)  # heure : 05
+        afficheurs.afficher_champ(heure_alarme, 4, 7, 2)  # alarme : 07
+        afficheurs.afficher_champ(heure_alarme, 6, 30, 2)  # alarme : 30
+
+        assert [heure_alarme.digit_bcd(i) for i in range(8)] == [1, 4, 0, 5, 0, 7, 3, 0]
+
 
 class TestAfficherSeparateur:
     def test_point_visible(self):
