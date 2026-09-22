@@ -1,7 +1,8 @@
 """Reveil pour sourd - firmware principal.
 
 Pour le moment : affichages DATE, ANNEE, HEURE et ALARME + reglage via
-les encodeurs REGLAGE_DATE, REGLAGE_HEURE et REGLAGE_ALARME. Voir le
+les encodeurs REGLAGE_DATE, REGLAGE_HEURE et REGLAGE_ALARME, plus la
+luminosite des affichages via le potentiometre LUMINOSITE. Voir le
 README (section "Mode de fonctionnement") pour le comportement
 detaille. L'alarme ne se declenche pas encore (pas de comparaison avec
 l'heure courante, pas de LED/moteur) : seule l'heure d'alarme peut
@@ -22,6 +23,7 @@ import reglage_date
 import reglage_heure
 from display import Afficheurs
 from encoder import Encodeur
+from luminosite import Potentiometre
 
 ANNEE_DEFAUT = 2026
 ALARME_HEURES_DEFAUT = 7
@@ -31,6 +33,7 @@ afficheurs = Afficheurs.depuis_broches()
 encodeur_date = Encodeur.depuis_broches(board.GP3, board.GP4, board.GP8)
 encodeur_heure = Encodeur.depuis_broches(board.GP0, board.GP1, board.GP2)
 encodeur_alarme = Encodeur.depuis_broches(board.GP12, board.GP13, board.GP14)
+potentiometre = Potentiometre.depuis_broche(board.GP26)
 
 # Horloge logicielle du RP2040 : pas de pile de sauvegarde sur cette carte,
 # donc reinitialisee a une date/heure par defaut a chaque reset/coupure d'alim.
@@ -92,6 +95,8 @@ while True:
     visible_jour, visible_mois, visible_annee = reglage_date.champs_visibles(mode_date, clignote)
     visible_heures, visible_minutes = reglage_heure.champs_visibles(mode_heure, clignote)
     visible_alarme_heures, visible_alarme_minutes = reglage_heure.champs_visibles(mode_alarme, clignote)
+
+    afficheurs.regler_luminosite(potentiometre.lire_niveau())
 
     afficheurs.afficher_champ(afficheurs.date_annee, 0, jour, 2, visible_jour)
     afficheurs.afficher_champ(afficheurs.date_annee, 2, mois, 2, visible_mois)

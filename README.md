@@ -91,9 +91,10 @@ Firmware écrit en **CircuitPython**. Point d'entrée : `firmware/code.py`. La l
 - `firmware/reveil/display.py` — pilotage des 2 puces MAX7219 (classe `Afficheurs`)
 - `firmware/reveil/encoder.py` — encodeur rotatif + bouton associé (classe `Encodeur`)
 - `firmware/reveil/reglage_date.py` — logique pure du réglage date/année (cycle de modes, calcul des jours par mois, application d'une rotation) : aucune dépendance matérielle, testable directement sur l'hôte
-- `firmware/reveil/reglage_heure.py` — logique pure du réglage heure (cycle de modes, application d'une rotation sur heures/minutes) : même principe que `reglage_date.py`
+- `firmware/reveil/reglage_heure.py` — logique pure du réglage heure (cycle de modes, application d'une rotation sur heures/minutes) : même principe que `reglage_date.py`, réutilisé tel quel pour l'heure d'alarme
+- `firmware/reveil/luminosite.py` — lecture du potentiomètre LUMINOSITE (classe `Potentiometre`) + conversion pure ADC→niveau MAX7219 (`niveau_depuis_adc()`)
 
-`display.py` et `encoder.py` séparent la construction matérielle (`depuis_broches()`, qui importe `board`/`busio`/`digitalio`/`rotaryio`) du reste de la classe, qui reçoit ses dépendances déjà construites — ça permet de tester leur logique (calcul de delta, détection de clic, écriture des digits) avec de faux objets, sans Pico ni stubs CircuitPython. `code.py` déploie via `depuis_broches()` ; les tests injectent de faux capteurs/chips (voir `firmware/tests/`).
+`display.py`, `encoder.py` et `luminosite.py` séparent la construction matérielle (`depuis_broches()`/`depuis_broche()`, qui importent `board`/`busio`/`digitalio`/`rotaryio`/`analogio`) du reste de la classe, qui reçoit ses dépendances déjà construites — ça permet de tester leur logique (calcul de delta, détection de clic, écriture des digits, conversion ADC) avec de faux objets, sans Pico ni stubs CircuitPython. `code.py` déploie via ces méthodes ; les tests injectent de faux capteurs/chips (voir `firmware/tests/`).
 
 `make deploy` copie `firmware/code.py` et aplatit `firmware/reveil/*.py` à la racine de `CIRCUITPY` (CircuitPython ne cherche les modules qu'à la racine et dans `lib/`, pas dans un sous-dossier arbitraire du dépôt).
 
@@ -126,7 +127,9 @@ Même principe que REGLAGE_DATE : chaque changement est appliqué immédiatement
 
 **L'alarme ne se déclenche pas encore** : pas de comparaison avec l'heure courante, pas de pilotage de la LED ni du moteur. Seule l'heure d'alarme peut être affichée et réglée pour l'instant.
 
-**Pas encore géré par ce firmware** : déclenchement de l'alarme (LED, moteur), luminosité (potentiomètre), bouton d'allumage des affichages, bouton d'arrêt alarme, interrupteur SPDT — voir TODO.
+**Luminosité via le potentiomètre LUMINOSITE.** Lu en continu (à chaque itération de la boucle principale) et appliqué aux deux puces MAX7219 (donc aux 4 affichages). La valeur ADC brute (0-65535) est convertie en niveau MAX7219 (0-15) par `luminosite.niveau_depuis_adc()`.
+
+**Pas encore géré par ce firmware** : déclenchement de l'alarme (LED, moteur), bouton d'allumage des affichages, bouton d'arrêt alarme, interrupteur SPDT — voir TODO.
 
 ### Dépendances
 
@@ -152,10 +155,10 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
   - [ ] **Bloquant pour tester le moteur** : le PCB physique existant a encore l'ancien IRF510 sans R5 — il faut ressouder à la main (bodge) ou fabriquer un nouveau PCB avant de pouvoir tester le moteur avec ce circuit. Un moteur de test n'est de toute façon pas encore disponible.
 
 ### Structure du firmware
-- [x] `reveil/display.py`, `reveil/encoder.py` — modules matériels (MAX7219, encodeurs rotatifs), construction hardware isolée dans `depuis_broches()` pour rester testables par injection de dépendances
+- [x] `reveil/display.py`, `reveil/encoder.py`, `reveil/luminosite.py` — modules matériels (MAX7219, encodeurs rotatifs, potentiomètre ADC), construction hardware isolée dans `depuis_broches()`/`depuis_broche()` pour rester testables par injection de dépendances
 - [x] `reveil/reglage_date.py`, `reveil/reglage_heure.py` — logique métier des réglages date/année et heure, isolée (modules purs, sans import CircuitPython). `reglage_heure.py` est réutilisé tel quel pour l'heure d'alarme (même forme : une paire heures/minutes avec un cycle de réglage à 2 champs)
 - [ ] `alarm.py` — déclenchement de l'alarme (comparaison heure courante / heure d'alarme réglée, pilotage LED + moteur) pas encore implémenté ; l'heure d'alarme peut déjà être affichée et réglée
-- [ ] `backlight.py` — pas encore nécessaire (luminosité/extinction auto pas encore implémentées)
+- [ ] `backlight.py` — extinction automatique des affichages après 30 s d'inactivité pas encore implémentée (luminosité l'est déjà via `luminosite.py`, mais l'allumage/extinction sur bouton est distinct)
 - [ ] Isoler la logique métier restante (déclenchement alarme, extinction auto) au fur et à mesure qu'elle est écrite, sur le même modèle que `reglage_date.py`
 
 ### Déploiement (Makefile)
@@ -170,9 +173,9 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
 
 ### Tests unitaires (sur hôte)
 - [x] Mettre en place `pytest` (`firmware/pytest.ini`, `firmware/tests/`, lancés via `make test-unit`)
-- [x] ~~Écrire des stubs pour les modules CircuitPython~~ — évité par un autre moyen : `display.py`/`encoder.py` séparent la construction matérielle (`depuis_broches()`) du reste de la classe, qui reçoit ses dépendances déjà construites (`board`/`busio`/`digitalio`/`rotaryio` ne sont importés que dans `depuis_broches()`) ; les tests injectent de faux objets (voir `firmware/tests/test_display.py`, `test_encoder.py`) sans avoir besoin de stubber les modules CircuitPython eux-mêmes
+- [x] ~~Écrire des stubs pour les modules CircuitPython~~ — évité par un autre moyen : `display.py`/`encoder.py`/`luminosite.py` séparent la construction matérielle (`depuis_broches()`/`depuis_broche()`) du reste de la classe, qui reçoit ses dépendances déjà construites (`board`/`busio`/`digitalio`/`rotaryio`/`analogio` ne sont importés que dans ces méthodes) ; les tests injectent de faux objets (voir `firmware/tests/test_display.py`, `test_encoder.py`, `test_luminosite.py`) sans avoir besoin de stubber les modules CircuitPython eux-mêmes
   - **Piège rencontré** : `firmware/code.py` (imposé par CircuitPython comme nom de point d'entrée) entre en collision avec le module standard `code` — si `firmware/` se retrouve dans `sys.path` (ex. `python -m pytest`, qui ajoute le répertoire courant), l'import de `code` par `pdb` récupère `firmware/code.py` à la place et plante. D'où `firmware/reveil/` comme dossier séparé pour la logique importable, et `pytest` invoqué directement (jamais `python -m pytest`) dans le Makefile.
-- [x] Écrire les tests unitaires pour la logique métier des réglages date/année et heure (`firmware/tests/test_reglage_date.py`, `test_reglage_heure.py`, réutilisés pour l'heure d'alarme) ; reste à faire au fur et à mesure pour le déclenchement de l'alarme, l'extinction automatique
+- [x] Écrire les tests unitaires pour la logique métier des réglages date/année et heure (`firmware/tests/test_reglage_date.py`, `test_reglage_heure.py`, réutilisés pour l'heure d'alarme) et pour la conversion ADC→luminosité (`test_luminosite.py`) ; reste à faire au fur et à mesure pour le déclenchement de l'alarme, l'extinction automatique
 - [x] Test de régression sur la position physique 4-7 de la puce Heure/Alarme (`test_display.py::test_heure_et_alarme_ne_se_marchent_pas_dessus`) — même classe de bug que l'inversion des digits déjà rencontrée sur Date/Année, jamais testée explicitement sur cette puce avant l'ajout d'ALARME
 
 ### Tests d'intégration (sur Pico)

@@ -56,6 +56,20 @@ class TestConstruction:
         assert date_annee.luminosite == 8
 
 
+class TestReglerLuminosite:
+    def test_applique_le_niveau_aux_deux_puces(self):
+        afficheurs, heure_alarme, date_annee = construire()
+        afficheurs.regler_luminosite(12)
+        assert heure_alarme.luminosite == 12
+        assert date_annee.luminosite == 12
+
+    def test_ecrase_la_luminosite_initiale(self):
+        afficheurs, heure_alarme, date_annee = construire()
+        afficheurs.regler_luminosite(3)
+        assert heure_alarme.luminosite == 3
+        assert date_annee.luminosite == 3
+
+
 class TestAfficherChamp:
     def test_ecrit_les_chiffres_a_la_bonne_position_physique(self):
         # Regression du bug d'inversion : "22" affiche a partir de la

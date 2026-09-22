@@ -55,6 +55,11 @@ class Afficheurs:
             chip.pixel(pos, i, valeur_bcd & 0x01)
             valeur_bcd >>= 1
 
+    def regler_luminosite(self, niveau):
+        """Applique un niveau de luminosite (0-15) aux deux puces."""
+        for chip in (self.heure_alarme, self.date_annee):
+            chip.brightness(niveau)
+
     def afficher_champ(self, chip, depart, valeur, largeur, visible=True):
         """Affiche 'valeur' sur 'largeur' digits de 'chip' (self.date_annee ou
         self.heure_alarme) a partir de la position physique 'depart' (0 =
