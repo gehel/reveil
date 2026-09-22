@@ -5,7 +5,11 @@ BLANC = 15  # code MAX7219 (Code B) pour un digit vide
 
 class Afficheurs:
     """Regroupe les deux puces MAX7219 : Heure/Alarme (digits 0-3 = Heure,
-    4-7 = Alarme) et Date/Annee (digits 0-3 = Date, 4-7 = Annee)."""
+    4-7 = Alarme) et Date/Annee (digits 0-3 = Date, 4-7 = Annee).
+
+    afficher_champ()/afficher_separateur() prennent la puce cible en
+    parametre (self.heure_alarme ou self.date_annee) : les deux exposent
+    la meme mecanique d'ecriture (voir _ecrire_digit)."""
 
     def __init__(self, chip_heure_alarme, chip_date_annee, luminosite=8):
         """chip_heure_alarme, chip_date_annee : objets exposant .pixel(x, y, bit),
@@ -51,21 +55,25 @@ class Afficheurs:
             chip.pixel(pos, i, valeur_bcd & 0x01)
             valeur_bcd >>= 1
 
-    def afficher_champ(self, depart, valeur, largeur, visible=True):
-        """Affiche 'valeur' sur 'largeur' digits de l'affichage Date/Annee
-        a partir de la position physique 'depart' (0 = premier digit a
-        gauche ; 0-3 = DATE, 4-7 = ANNEE).
-        Si visible est faux, le champ est vide (utilise pour le clignotement)."""
+    def afficher_champ(self, chip, depart, valeur, largeur, visible=True):
+        """Affiche 'valeur' sur 'largeur' digits de 'chip' (self.date_annee ou
+        self.heure_alarme) a partir de la position physique 'depart' (0 =
+        premier digit a gauche ; 0-3 = premier affichage logique de la puce,
+        4-7 = second). Si visible est faux, le champ est vide (utilise pour
+        le clignotement)."""
         if visible:
             for i, car in enumerate(f"{valeur:0{largeur}}"):
-                self._ecrire_digit(self.date_annee, depart + i, int(car))
+                self._ecrire_digit(chip, depart + i, int(car))
         else:
             for pos in range(depart, depart + largeur):
-                self._ecrire_digit(self.date_annee, pos, BLANC)
+                self._ecrire_digit(chip, pos, BLANC)
 
-    def separateur_date(self, visible=True):
-        """Point decimal entre jour et mois sur l'affichage DATE (format JJ.MM)."""
-        self.date_annee.pixel(1, 7, 1 if visible else 0)
+    def afficher_separateur(self, chip, pos, visible=True):
+        """Point decimal a la position physique 'pos' de 'chip' (ex. entre
+        jour et mois sur DATE, ou entre heures et minutes sur HEURE, au
+        format JJ.MM / HH.MM)."""
+        chip.pixel(pos, 7, 1 if visible else 0)
 
     def rafraichir(self):
         self.date_annee.show()
+        self.heure_alarme.show()

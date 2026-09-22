@@ -91,6 +91,7 @@ Firmware écrit en **CircuitPython**. Point d'entrée : `firmware/code.py`. La l
 - `firmware/reveil/display.py` — pilotage des 2 puces MAX7219 (classe `Afficheurs`)
 - `firmware/reveil/encoder.py` — encodeur rotatif + bouton associé (classe `Encodeur`)
 - `firmware/reveil/reglage_date.py` — logique pure du réglage date/année (cycle de modes, calcul des jours par mois, application d'une rotation) : aucune dépendance matérielle, testable directement sur l'hôte
+- `firmware/reveil/reglage_heure.py` — logique pure du réglage heure (cycle de modes, application d'une rotation sur heures/minutes) : même principe que `reglage_date.py`
 
 `display.py` et `encoder.py` séparent la construction matérielle (`depuis_broches()`, qui importe `board`/`busio`/`digitalio`/`rotaryio`) du reste de la classe, qui reçoit ses dépendances déjà construites — ça permet de tester leur logique (calcul de delta, détection de clic, écriture des digits) avec de faux objets, sans Pico ni stubs CircuitPython. `code.py` déploie via `depuis_broches()` ; les tests injectent de faux capteurs/chips (voir `firmware/tests/`).
 
@@ -109,7 +110,17 @@ Firmware écrit en **CircuitPython**. Point d'entrée : `firmware/code.py`. La l
 
 Chaque changement de valeur est appliqué immédiatement à l'horloge RTC (pas de bouton "valider" séparé).
 
-**Pas encore géré par ce firmware** : affichages HEURE et ALARME, encodeurs REGLAGE_HEURE et REGLAGE_ALARME, luminosité (potentiomètre), bouton d'allumage des affichages, bouton d'arrêt alarme, interrupteur SPDT, LED et moteur — voir TODO.
+**Affichage HEURE.** En fonctionnement normal, montre l'heure courante au format `HH.MM` (point décimal séparateur). Même horloge RTC que DATE/ANNEE (pas de pile de sauvegarde, à régler à chaque démarrage).
+
+**Réglage via l'encodeur REGLAGE_HEURE.** Cycle à 3 états (un champ de moins que REGLAGE_DATE, pas d'équivalent de l'année) :
+
+1. Appui 1 → mode **réglage des heures** : le champ heures clignote, rotation = incrément/décrément (boucle 0-23).
+2. Appui 2 → mode **réglage des minutes** : le champ minutes clignote, rotation = incrément/décrément (boucle 0-59).
+3. Appui 3 → retour au mode **normal**, le cycle recommence au prochain clic.
+
+Même principe que REGLAGE_DATE : chaque changement est appliqué immédiatement à l'horloge RTC.
+
+**Pas encore géré par ce firmware** : affichage ALARME, encodeur REGLAGE_ALARME, luminosité (potentiomètre), bouton d'allumage des affichages, bouton d'arrêt alarme, interrupteur SPDT, LED et moteur — voir TODO.
 
 ### Dépendances
 
@@ -136,7 +147,7 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
 
 ### Structure du firmware
 - [x] `reveil/display.py`, `reveil/encoder.py` — modules matériels (MAX7219, encodeurs rotatifs), construction hardware isolée dans `depuis_broches()` pour rester testables par injection de dépendances
-- [x] `reveil/reglage_date.py` — logique métier du réglage date/année, isolée (module pur, sans import CircuitPython)
+- [x] `reveil/reglage_date.py`, `reveil/reglage_heure.py` — logique métier des réglages date/année et heure, isolée (modules purs, sans import CircuitPython)
 - [ ] `alarm.py`, `backlight.py` — pas encore nécessaires (alarme, luminosité/extinction auto pas encore implémentées)
 - [ ] Isoler la logique métier restante (alarme, extinction auto) au fur et à mesure qu'elle est écrite, sur le même modèle que `reglage_date.py`
 
@@ -154,7 +165,7 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
 - [x] Mettre en place `pytest` (`firmware/pytest.ini`, `firmware/tests/`, lancés via `make test-unit`)
 - [x] ~~Écrire des stubs pour les modules CircuitPython~~ — évité par un autre moyen : `display.py`/`encoder.py` séparent la construction matérielle (`depuis_broches()`) du reste de la classe, qui reçoit ses dépendances déjà construites (`board`/`busio`/`digitalio`/`rotaryio` ne sont importés que dans `depuis_broches()`) ; les tests injectent de faux objets (voir `firmware/tests/test_display.py`, `test_encoder.py`) sans avoir besoin de stubber les modules CircuitPython eux-mêmes
   - **Piège rencontré** : `firmware/code.py` (imposé par CircuitPython comme nom de point d'entrée) entre en collision avec le module standard `code` — si `firmware/` se retrouve dans `sys.path` (ex. `python -m pytest`, qui ajoute le répertoire courant), l'import de `code` par `pdb` récupère `firmware/code.py` à la place et plante. D'où `firmware/reveil/` comme dossier séparé pour la logique importable, et `pytest` invoqué directement (jamais `python -m pytest`) dans le Makefile.
-- [x] Écrire les tests unitaires pour la logique métier du réglage date/année (`firmware/tests/test_reglage_date.py`) ; reste à faire au fur et à mesure pour l'alarme, les encodeurs restants, l'extinction automatique
+- [x] Écrire les tests unitaires pour la logique métier des réglages date/année et heure (`firmware/tests/test_reglage_date.py`, `test_reglage_heure.py`) ; reste à faire au fur et à mesure pour l'alarme, l'encodeur restant, l'extinction automatique
 
 ### Tests d'intégration (sur Pico)
 - [ ] Ajouter `adafruit_unittest` aux dépendances
