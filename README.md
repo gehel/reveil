@@ -7,7 +7,7 @@ Réveil électronique custom conçu pour les personnes sourdes ou malentendantes
 ## Matériel
 
 ### Microcontrôleur
-- **Raspberry Pi Pico** (RP2040) — firmware CircuitPython
+- **Raspberry Pi Pico W** (RP2040) — firmware CircuitPython
 
 ### Affichages
 - **2× MAX7219** pilotant 4 affichages 7-segments de 4 chiffres chacun :
@@ -28,7 +28,7 @@ Réveil électronique custom conçu pour les personnes sourdes ou malentendantes
 
 ### Alarme
 - **LED** blanche (D1) clignotante, pilotée via un transistor Q1 (2N3904)
-- **Moteur DC** piloté via un MOSFET (Q2) pour faire vibrer le lit — **IRF510** sur la carte physique, schéma KiCad pas encore aligné (voir TODO)
+- **Moteur DC** piloté via un MOSFET (Q2) pour faire vibrer le lit — **IRLB8721PbF** (logic-level) dans le schéma/PCB, avec une résistance de grille R5 (100 Ω) ; la carte physique a encore l'ancien **IRF510** sans résistance de grille, rework pas encore fait (voir TODO)
 
 ### Alimentation
 - Port **USB** du Raspberry Pi Pico
@@ -105,12 +105,12 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
 - [x] Court-circuit GND/+3V3 via l'interrupteur `ALARME_ON_OFF1` : le footprint système (`Button_Switch_THT:SW_Slide-03_Wuerth-WS-SLTV...`) avait les pads 1 et 2 physiquement inversés par rapport au composant monté. Corrigé via une librairie locale `reveil.pretty/` (pads 1/2 échangés) + `fp-lib-table`. Vérifié par mesure au multimètre, ERC et DRC (voir historique git).
 - [x] LED D1 toujours allumée faiblement au lieu de clignoter : la base de Q1 (2N3904, driver de D1) était câblée directement sur GP17 sans résistance série, empêchant GP17 d'atteindre un état haut propre (chargé par la jonction base-émetteur). Corrigé dans KiCad : ajout de **R4 = 1.5 kΩ** en série sur la base, et **R3 = 100 Ω** (au lieu de 47 kΩ, qui aurait quasi éteint la LED) pour ~16 mA dans D1 (LED blanche, Vf≈3.2V supposé — pas de référence/datasheet exacte pour D1, à vérifier si besoin de précision). Vérifié par ERC/DRC.
   - [ ] **Bloquant pour tester la LED** : le PCB physique existant n'a pas ces corrections (footprint switch + R3/R4) — il faut ressouder à la main (bodge) ou fabriquer un nouveau PCB avant de pouvoir tester `code.py` avec `board.LED` remplacé par `board.GP17`. `firmware/code.py` a été remis à `board.LED` (LED embarquée du Pico) en attendant.
-- [ ] **Décalage schéma/carte physique — Q2 (moteur DC)** : le schéma KiCad indique un **IRF540N**, mais le MOSFET réellement monté sur le PCB physique est un **IRF510**. Le schéma (et donc le BOM) doit être mis à jour pour refléter la pièce réelle — pas encore fait.
-- [ ] **À vérifier — pilotage de grille de Q2 (moteur DC)** : topologie de câblage correcte (Gate←GP18, Drain→moteur(-), Source→GND, moteur(+)→VBUS ; vérifié via l'analyse du netlist), mais **pas corrigé, à confirmer avant de faire tourner le moteur** :
+- [x] **Décalage schéma/carte physique — Q2 (moteur DC)** : le schéma KiCad indiquait un IRF540N, mais le MOSFET réellement monté sur le PCB physique était un IRF510. Résolu en remplaçant Q2 par un **IRLB8721PbF** (logic-level) dans le schéma et le PCB — voir point suivant, qui couvre aussi la raison de ce changement. Footprint `TO-220-3_Horizontal_TabDown` (corrigé après repérage d'une variante `TO-220F` erronée), pinout G/D/S broches 1/2/3 vérifié contre la convention IR/Infineon. Vérifié par ERC/DRC.
+- [x] **Pilotage de grille de Q2 (moteur DC)** : topologie de câblage correcte (Gate←GP18, Drain→moteur(-), Source→GND, moteur(+)→VBUS ; vérifié via l'analyse du netlist). Le problème identifié :
   - GP18 pilote la grille de Q2 directement en 3.3V, sans résistance de grille ni driver dédié.
-  - Ni l'IRF540N (schéma) ni l'IRF510 (carte physique) ne sont des MOSFET **"logic-level"** : leur Rds(on) nominal est spécifié à Vgs=10V (IRF510 : ~0.54Ω max ; IRF540N : ~44-77 mΩ). À 3.3V (Vgs proche du seuil typique 2-4V de ces composants), le MOSFET risque de ne pas être pleinement enhancé → Rds(on) effectif bien plus élevé que la valeur datasheet → échauffement de Q2 et/ou sous-alimentation du moteur. S'applique donc quel que soit lequel des deux est effectivement utilisé.
-  - Pas de résistance de grille série non plus (moins critique électriquement pour un MOSFET qu'un BJT, mais bonne pratique pour limiter les transitoires de commutation).
-  - Pistes de correction possibles (non appliquées) : remplacer Q2 par un MOSFET logic-level (ex. IRLZ44N, AO3400), ou ajouter un étage driver de grille.
+  - Ni l'IRF540N (ancien schéma) ni l'IRF510 (carte physique) ne sont des MOSFET **"logic-level"** : leur Rds(on) nominal est spécifié à Vgs=10V (IRF510 : ~0.54Ω max ; IRF540N : ~44-77 mΩ). À 3.3V (Vgs proche du seuil typique 2-4V de ces composants), le MOSFET risque de ne pas être pleinement enhancé → Rds(on) effectif bien plus élevé que la valeur datasheet → échauffement de Q2 et/ou sous-alimentation du moteur.
+  - Corrigé dans KiCad : Q2 remplacé par un **IRLB8721PbF** (Vgs(th) ≈ 1-2V, pleinement enhancé dès Vgs≈2.5V, Rds(on) ≈ 8.7 mΩ typique à Vgs=4.5V — largement suffisant en pilotage direct 3.3V), plus ajout de **R5 = 100 Ω** en série sur la grille (limite le pic de courant transitoire vu par GP18 et amortit le ringing). Vérifié par ERC/DRC.
+  - [ ] **Bloquant pour tester le moteur** : le PCB physique existant a encore l'ancien IRF510 sans R5 — il faut ressouder à la main (bodge) ou fabriquer un nouveau PCB avant de pouvoir tester le moteur avec ce circuit. Un moteur de test n'est de toute façon pas encore disponible.
 
 ### Structure du firmware
 - [ ] Séparer `code.py` en modules : `display.py`, `encoder.py`, `alarm.py`, `backlight.py`
