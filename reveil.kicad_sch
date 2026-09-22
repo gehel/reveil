@@ -3380,7 +3380,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Transistor_FET:IRF540N"
+		(symbol "Transistor_FET:IRLB8721PBF"
 			(pin_names
 				(hide yes)
 			)
@@ -3396,7 +3396,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "IRF540N"
+			(property "Value" "IRLB8721PBF"
 				(at 5.08 0 0)
 				(effects
 					(font
@@ -3416,7 +3416,7 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "http://www.irf.com/product-info/datasheets/data/irf540n.pdf"
+			(property "Datasheet" "http://www.infineon.com/dgdl/irlb8721pbf.pdf?fileId=5546d462533600a40153566056732591"
 				(at 5.08 -3.81 0)
 				(effects
 					(font
@@ -3426,7 +3426,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "33A Id, 100V Vds, HEXFET N-Channel MOSFET, TO-220"
+			(property "Description" "62A Id, 30V Vds, 8.7 mOhm Rds, N-Channel HEXFET Power MOSFET, TO-220"
 				(at 0 0 0)
 				(effects
 					(font
@@ -3435,7 +3435,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "HEXFET N-Channel MOSFET"
+			(property "ki_keywords" "N-Channel HEXFET MOSFET Logic-Level"
 				(at 0 0 0)
 				(effects
 					(font
@@ -3453,7 +3453,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "IRF540N_0_1"
+			(symbol "IRLB8721PBF_0_1"
 				(polyline
 					(pts
 						(xy 0.254 1.905) (xy 0.254 -1.905)
@@ -3620,7 +3620,7 @@
 					)
 				)
 			)
-			(symbol "IRF540N_1_1"
+			(symbol "IRLB8721PBF_1_1"
 				(pin input line
 					(at -5.08 0 0)
 					(length 2.54)
@@ -4500,6 +4500,16 @@
 	)
 	(wire
 		(pts
+			(xy 228.6 144.78) (xy 231.14 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "63cae8cc-aced-4f64-9724-69d8ea7d56bd")
+	)
+	(wire
+		(pts
 			(xy 167.64 38.1) (xy 167.64 46.99)
 		)
 		(stroke
@@ -4800,6 +4810,16 @@
 	)
 	(wire
 		(pts
+			(xy 238.76 144.78) (xy 241.3 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aaa23c55-de6a-4b46-b725-7b8fa7776ab2")
+	)
+	(wire
+		(pts
 			(xy 246.38 76.2) (xy 246.38 77.47)
 		)
 		(stroke
@@ -4907,16 +4927,6 @@
 			(type default)
 		)
 		(uuid "c61eae90-382e-4c78-b262-2caf172f093e")
-	)
-	(wire
-		(pts
-			(xy 238.76 144.78) (xy 241.3 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c6b7ada0-38a7-4703-9855-9c9dfab360a3")
 	)
 	(wire
 		(pts
@@ -5674,7 +5684,7 @@
 	)
 	(global_label "VIBREUR"
 		(shape input)
-		(at 238.76 144.78 180)
+		(at 228.6 144.78 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -5684,7 +5694,7 @@
 		)
 		(uuid "a059d4f1-7513-4251-908f-81c5ac32e73a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 227.7919 144.78 0)
+			(at 217.6319 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6267,6 +6277,82 @@
 			(project ""
 				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
 					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:IRLB8721PBF")
+		(at 246.38 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2bc0792e-59ec-4fcd-af89-0467a80a90b3")
+		(property "Reference" "Q2"
+			(at 252.73 143.5099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRLB8721PBF"
+			(at 252.73 146.0499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-220-3_Horizontal_TabDown"
+			(at 251.46 146.685 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.infineon.com/dgdl/irlb8721pbf.pdf?fileId=5546d462533600a40153566056732591"
+			(at 251.46 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "62A Id, 30V Vds, 8.7 mOhm Rds, N-Channel HEXFET Power MOSFET, TO-220"
+			(at 246.38 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "73f1b755-254e-4892-92f5-53f47680c067")
+		)
+		(pin "2"
+			(uuid "2bab6ea0-23cc-445a-8a8a-a2b02daccd5f")
+		)
+		(pin "1"
+			(uuid "e0c24c45-8c29-4222-85a3-b2464b2659a1")
+		)
+		(instances
+			(project ""
+				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
+					(reference "Q2")
 					(unit 1)
 				)
 			)
@@ -7239,82 +7325,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:IRF540N")
-		(at 246.38 144.78 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "71a8bc56-7757-4023-8774-f7f876ad84df")
-		(property "Reference" "Q2"
-			(at 252.73 143.5099 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "IRF540N"
-			(at 252.73 146.0499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-220-3_Horizontal_TabDown"
-			(at 251.46 146.685 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.irf.com/product-info/datasheets/data/irf540n.pdf"
-			(at 251.46 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Description" "33A Id, 100V Vds, HEXFET N-Channel MOSFET, TO-220"
-			(at 246.38 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "aeaaf8db-42a3-439c-a0fc-af4f04ebc971")
-		)
-		(pin "2"
-			(uuid "bbae88a8-9540-46ab-8a04-bc54abcfc4e6")
-		)
-		(pin "1"
-			(uuid "8ea8030e-2df7-4b3e-9962-876bdaafdf3b")
-		)
-		(instances
-			(project ""
-				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
-					(reference "Q2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3V3")
 		(at 135.89 116.84 0)
 		(unit 1)
@@ -7653,6 +7663,74 @@
 			(project "reveil"
 				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
 					(reference "#PWR016")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 234.95 144.78 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "819490d6-1e93-4cb0-babc-58416165f1c8")
+		(property "Reference" "R5"
+			(at 234.95 138.43 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100R"
+			(at 234.95 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 234.95 146.558 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 234.95 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 234.95 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "9e0a868c-d698-40f3-9547-10deb538f082")
+		)
+		(pin "1"
+			(uuid "5d3321d0-03dc-4466-be97-071d4f391ce2")
+		)
+		(instances
+			(project "reveil"
+				(path "/6015885c-867c-4e88-9a3e-de8167bfed74"
+					(reference "R5")
 					(unit 1)
 				)
 			)
