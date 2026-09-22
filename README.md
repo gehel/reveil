@@ -87,7 +87,24 @@ Les fichiers générés se trouvent dans le dossier `Generated/`. Les fichiers p
 
 ## Logiciel
 
-Firmware écrit en **CircuitPython**. Source : `firmware/code.py`.
+Firmware écrit en **CircuitPython**. Point d'entrée : `firmware/code.py`, avec deux modules matériels :
+- `firmware/display.py` — pilotage des 2 puces MAX7219 (classe `Afficheurs`)
+- `firmware/encoder.py` — encodeur rotatif + bouton associé (classe `Encodeur`)
+
+### Mode de fonctionnement
+
+**Affichages DATE et ANNEE.** En fonctionnement normal, l'affichage DATE montre le jour et le mois courants au format `JJ.MM` (point décimal séparateur entre les deux), et l'affichage ANNEE montre l'année sur 4 chiffres. Les valeurs viennent de l'horloge interne du RP2040 (module CircuitPython `rtc`) : celle-ci n'a **pas de pile de sauvegarde** sur cette carte, donc elle repart d'une date par défaut (1er janvier de l'année courante de développement) à chaque reset ou coupure d'alimentation — elle doit être réglée à nouveau à chaque démarrage.
+
+**Réglage via l'encodeur REGLAGE_DATE.** Un clic sur le bouton de l'encodeur fait entrer/avancer dans le cycle de réglage :
+
+1. Appui 1 → mode **réglage du jour** : le champ jour clignote (~1,25 Hz), tourner l'encodeur l'incrémente/décrémente (boucle 1 → dernier jour du mois → 1, en tenant compte des mois à 30/31 jours et des années bissextiles).
+2. Appui 2 → mode **réglage du mois** : le champ mois clignote, rotation = incrément/décrément (boucle 1-12). Si le jour courant n'existe pas dans le nouveau mois (ex. 31 → février), il est ramené au dernier jour valide.
+3. Appui 3 → mode **réglage de l'année** : l'affichage ANNEE clignote en entier, rotation = incrément/décrément (boucle 2000-2099). Même ajustement du jour si nécessaire (29 février d'une année non bissextile).
+4. Appui 4 → retour au mode **normal** (plus aucun champ ne clignote), le cycle recommence au prochain clic.
+
+Chaque changement de valeur est appliqué immédiatement à l'horloge RTC (pas de bouton "valider" séparé).
+
+**Pas encore géré par ce firmware** : affichages HEURE et ALARME, encodeurs REGLAGE_HEURE et REGLAGE_ALARME, luminosité (potentiomètre), bouton d'allumage des affichages, bouton d'arrêt alarme, interrupteur SPDT, LED et moteur — voir TODO.
 
 ### Dépendances
 
@@ -97,7 +114,7 @@ Les bibliothèques CircuitPython nécessaires sont listées dans `firmware/requi
 adafruit_max7219
 ```
 
-Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode stockage USB).
+Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode stockage USB), ou via `make deps` (voir `firmware/Makefile`).
 
 ## TODO
 
@@ -113,13 +130,14 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
   - [ ] **Bloquant pour tester le moteur** : le PCB physique existant a encore l'ancien IRF510 sans R5 — il faut ressouder à la main (bodge) ou fabriquer un nouveau PCB avant de pouvoir tester le moteur avec ce circuit. Un moteur de test n'est de toute façon pas encore disponible.
 
 ### Structure du firmware
-- [ ] Séparer `code.py` en modules : `display.py`, `encoder.py`, `alarm.py`, `backlight.py`
-- [ ] Isoler la logique métier des appels hardware pour permettre les tests sans matériel
+- [x] `display.py`, `encoder.py` — modules matériels (MAX7219, encodeurs rotatifs)
+- [ ] `alarm.py`, `backlight.py` — pas encore nécessaires (alarme, luminosité/extinction auto pas encore implémentées)
+- [ ] Isoler la logique métier (ex. la machine à états du réglage date/année, actuellement dans `code.py`) des appels hardware pour permettre les tests sans matériel
 
 ### Déploiement (Makefile)
 - [x] Créer un `Makefile` (`firmware/Makefile`) avec les cibles :
   - `make install-circuitpython` — flashe CircuitPython sur le Pico
-  - `make deploy` — copie `code.py` (et `lib/` si présent) sur le volume `CIRCUITPY` monté par l'hôte (pas `mpremote fs cp`, qui échoue en lecture seule sur CircuitPython)
+  - `make deploy` — copie tous les modules `.py` du firmware (et `lib/` si présent) sur le volume `CIRCUITPY` monté par l'hôte (pas `mpremote fs cp`, qui échoue en lecture seule sur CircuitPython)
   - `make deps` — installe les dépendances CircuitPython via `circup`
   - [ ] `make test-unit` — lance les tests unitaires sur l'hôte (cible stub, pas encore exécutable)
   - [ ] `make test-integration` — lance les tests d'intégration sur le Pico via `mpremote run` (cible stub, pas encore exécutable)

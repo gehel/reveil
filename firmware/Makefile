@@ -17,7 +17,7 @@ UF2_TMP := /tmp/circuitpython-$(BOARD).uf2
 help:
 	@echo "Cibles disponibles :"
 	@echo "  make install-circuitpython - flashe la dernière version stable de CircuitPython sur le Pico"
-	@echo "  make deploy                - copie code.py (et lib/ si présent) sur le Pico"
+	@echo "  make deploy                - copie les modules .py du firmware (et lib/ si présent) sur le Pico"
 	@echo "  make deps                  - installe les librairies CircuitPython via circup"
 	@echo "  make test-unit             - lance les tests unitaires sur l'hôte"
 	@echo "  make test-integration      - lance les tests d'intégration sur le Pico"
@@ -45,7 +45,7 @@ deploy:
 		echo "Volume CIRCUITPY introuvable. Branchez le Pico sous CircuitPython (voir 'make install-circuitpython')."; \
 		exit 1; \
 	fi
-	cp code.py "$(CIRCUITPY_MOUNT)/code.py"
+	cp *.py "$(CIRCUITPY_MOUNT)/"
 	@if [ -d lib ]; then cp -r lib "$(CIRCUITPY_MOUNT)/"; fi
 
 deps:
