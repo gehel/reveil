@@ -154,6 +154,56 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
   - Corrigé dans KiCad : Q2 remplacé par un **IRLB8721PbF** (Vgs(th) ≈ 1-2V, pleinement enhancé dès Vgs≈2.5V, Rds(on) ≈ 8.7 mΩ typique à Vgs=4.5V — largement suffisant en pilotage direct 3.3V), plus ajout de **R5 = 100 Ω** en série sur la grille (limite le pic de courant transitoire vu par GP18 et amortit le ringing). Vérifié par ERC/DRC.
   - [ ] **Bloquant pour tester le moteur** : le PCB physique existant a encore l'ancien IRF510 sans R5 — il faut ressouder à la main (bodge) ou fabriquer un nouveau PCB avant de pouvoir tester le moteur avec ce circuit. Un moteur de test n'est de toute façon pas encore disponible.
 
+### Améliorations matérielles proposées (revue schéma/PCB du 2026-10-03)
+
+État au moment de la revue : ERC 0 erreur / 0 avertissement ; DRC 0 piste non connectée, 0 écart schéma/PCB, seulement 6 avertissements de sérigraphie de J2 coupée par le bord (normal pour un jack en bordure). Limite de la revue : aucun composant n'a de MPN ni de datasheet dans le projet, les valeurs datasheet citées ci-dessous n'ont pas été relues dans les PDF.
+
+**Prioritaire**
+- [ ] **Symbole des afficheurs incohérent avec le câblage** : le schéma utilise `CA56-12EWA` (anode commune), mais les anodes communes CA1-CA4 sont reliées aux sorties `DIG_x` du MAX7219 (qui *absorbent* le courant) et les segments aux sorties `SEG_x` (qui *fournissent* le courant). Avec de vrais afficheurs à anode commune, rien ne s'allumerait ; comme les afficheurs fonctionnent, les composants montés sont très probablement à cathode commune. → Confirmer la référence imprimée sur les afficheurs, puis remplacer le symbole par `CC56-12EWA` (même brochage, seules la doc et la BOM changent).
+- [ ] **Pas de diode de roue libre sur le moteur** : rien entre le drain de Q2 et VBUS, en parallèle de M1. La surtension inductive à chaque coupure passe par l'avalanche de Q2 et parasite le 5 V du Pico. → Ajouter une Schottky (1N5819) ou une 1N4148 entre le drain de Q2 et VBUS (cathode côté VBUS), plus 100 nF aux bornes du moteur contre les parasites des balais.
+- [ ] **Grille de Q2 flottante au démarrage** : GPIO18 est en haute impédance pendant le boot/reset → vibration intempestive possible, ou Q2 à moitié passant qui chauffe. → Ajouter 100 kΩ grille-source, près de Q2. Éventuellement 47 kΩ base-émetteur sur Q1.
+- [ ] **R1 sans valeur** (valeur « R ») : c'est la résistance ISET de U2. → Mettre 47 kΩ comme R2 (≈ 14 mA par segment), sinon HEURE/ALARME n'auront pas la même luminosité que DATE/ANNEE.
+
+**Alimentation**
+- [ ] **Le barrel jack J1 alimente directement VBUS** : si l'USB est branché en même temps, les deux 5 V sont en parallèle et l'alimentation du jack renvoie du courant vers le PC. Pas de protection contre l'inversion de polarité. → Rail 5 V externe pour MAX7219 + moteur + LED, Schottky de ce rail vers VSYS (broche 39), VBUS laissé à l'USB ; ajouter 220-470 µF en entrée.
+- [ ] **Logique 3,3 V vers un MAX7219 alimenté en 5 V** : le VIH minimal du MAX7219 est de 3,5 V, les signaux du Pico sont hors spécification (ça marche, mais sans marge). → 74AHCT125 ou 74HCT245 alimenté en 5 V sur DIN/CLK/LOAD (6 signaux).
+- [ ] **Découplage des MAX7219 trop loin** (datasheet : 10 µF + 100 nF au plus près de V+/GND). Distances estimées depuis la broche V+ : U1 → C1 ≈ 21 mm, C2 ≈ 30 mm ; U2 → C3 ≈ 12 mm, C4 ≈ 15 mm. → Rapprocher à moins de 5 mm (le balayage du MAX7219 crée de forts pics de courant).
+
+**PCB**
+- [ ] Toutes les pistes font 0,2 mm, alimentations comprises. → Passer VBUS, GND et le chemin moteur (drain de Q2) à 0,5-1 mm.
+- [ ] Plan de masse B.Cu très découpé par les pistes de signal. → Ajouter des vias de couture GND, router moins en B.Cu.
+- [ ] VIBREUR fait ≈ 169 mm entre le Pico et Q2. → Garder R5 et la future résistance de rappel près de Q2 (déjà le cas pour R5).
+- [ ] Cartouche vide (titre, révision, date) sur le schéma et le PCB. → Le remplir (les sorties KiBot en profitent).
+- [ ] Ajouter des points de test (voir section suivante).
+
+**Fonctionnel**
+- [ ] **Aucune sauvegarde de l'heure** : une coupure de courant efface l'heure et l'alarme, ce qui est critique pour un réveil. → DS3231 + pile CR2032 sur I2C (GP20/GP21 sont libres), et/ou synchronisation NTP par le WiFi du Pico W (firmware seul).
+- [ ] **Une LED 3 mm (~16 mA) réveille mal.** → LED de puissance ou ruban LED commandé par un MOSFET, comme le moteur.
+- [ ] **Moteur sur un jack 3,5 mm avec le +5 V sur le manchon** (exposé). → Connecteur polarisé et verrouillable (JST-XH, bornier). Pour M1, cocher « Exclure du PCB » plutôt que de laisser l'empreinte vide.
+- [ ] Petits plus : bouton reset (RUN vers GND) pour le développement ; 100 nF sur le curseur de LUMINOSITE, alimenté par ADC_VREF/AGND ; filtres RC recommandés pour les encodeurs EC11 (10 kΩ + 10 nF).
+
+**Faux positifs écartés par la revue** : 3V3_EN « sans pull-up » (pull-up interne au Pico), J2 « sans masse » (moteur commuté côté bas, voulu), absence de MPN (sans importance pour un montage à la main), J2 qui dépasse du bord (montage en bordure).
+
+### Points de test proposés
+
+Pastilles traversantes (`TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm`) ou boucles (`TestPoint:TestPoint_Keystone_5000-5004_Miniature`) pour les masses, avec la référence `TPx` et le nom du net sur la sérigraphie. À placer en bord de carte ou dans les zones dégagées, accessibles avec les afficheurs et les encodeurs montés.
+
+| Point | Net | Usage |
+|-------|-----|-------|
+| TP1, TP2, TP3 | GND | Masse pour la pince de l'oscilloscope / du multimètre : une près de J1, une près des MAX7219, une près de Q2 (boucles) |
+| TP4 | VBUS (5 V) | Tension d'entrée, chute sous charge (moteur + afficheurs à fond) |
+| TP5 | +3V3 | Sortie du régulateur du Pico |
+| TP6 | VSYS | Utile surtout si l'alimentation passe par VSYS (voir ci-dessus) |
+| TP7, TP8, TP9 | DATE_DIN, DATE_CLK, DATE_LOAD | Trame SPI vers U1 (niveaux logiques, décodage à l'analyseur logique) |
+| TP10, TP11, TP12 | HEURE_ALARME_DIN, HEURE_ALARME_CLK, HEURE_ALARME_LOAD | Trame SPI vers U2 |
+| TP13 | Grille de Q2 (après R5) | Commande du moteur, état au démarrage (vérifie la résistance de rappel) |
+| TP14 | Drain de Q2 | Surtension de coupure du moteur (vérifie la diode de roue libre), Vds en conduction |
+| TP15 | Collecteur de Q1 | Commande de la LED (saturation de Q1) |
+| TP16 | LUMINOSITE | Tension du curseur du potentiomètre (bruit lu par l'ADC) |
+| TP17 | ISET de U1 ou U2 | Optionnel : contrôle de la résistance ISET sans dessouder |
+
+Les signaux des encodeurs, des boutons et de l'interrupteur restent accessibles directement sur les broches des composants, pas besoin de points de test dédiés.
+
 ### Structure du firmware
 - [x] `reveil/display.py`, `reveil/encoder.py`, `reveil/luminosite.py` — modules matériels (MAX7219, encodeurs rotatifs, potentiomètre ADC), construction hardware isolée dans `depuis_broches()`/`depuis_broche()` pour rester testables par injection de dépendances
 - [x] `reveil/reglage_date.py`, `reveil/reglage_heure.py` — logique métier des réglages date/année et heure, isolée (modules purs, sans import CircuitPython). `reglage_heure.py` est réutilisé tel quel pour l'heure d'alarme (même forme : une paire heures/minutes avec un cycle de réglage à 2 champs)
