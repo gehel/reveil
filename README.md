@@ -59,6 +59,21 @@ docker run --rm -v "$PWD":/mnt -w /mnt ghcr.io/inti-cmnb/kicad9_auto_full:latest
 
 Les fichiers générés se trouvent dans le dossier `Generated/`. Les fichiers prêts pour JLCPCB sont dans `jlcpcb/`.
 
+### Skills Claude Code (kicad-happy)
+
+Les skills [kicad-happy](https://github.com/aklofas/kicad-happy) (analyse schéma/PCB, BOM, datasheets, EMC, SPICE, fournisseurs JLCPCB/LCSC/DigiKey/Mouser…) sont installés au niveau du projet via [`skills`](https://github.com/vercel-labs/skills) :
+
+```bash
+npx skills add aklofas/kicad-happy
+```
+
+Seul `skills-lock.json` (sources et hashes des skills) est versionné ; les fichiers installés (`.agents/skills/`, et les liens symboliques `.claude/skills/`) sont ignorés par git. Pour les restaurer après un clone, ou les mettre à jour :
+
+```bash
+npx skills experimental_install   # restaure les skills depuis skills-lock.json
+npx skills update -p               # met à jour les skills du projet (et skills-lock.json)
+```
+
 ## Connexions (RP2040)
 
 | GPIO | Composant | Signal |

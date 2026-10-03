@@ -121,3 +121,7 @@ bom
 jlcpcb
 .claude_scratch
 analysis
+
+### Claude Code skills (restaurés via `npx skills experimental_install`, voir README)
+.agents/
+.claude/skills/
