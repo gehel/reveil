@@ -5173,7 +5173,7 @@
 				)
 			)
 		)
-		(property "Value" "1N5819"
+		(property "Value" "1N5822"
 			(at 5.08 2.47 0)
 			(layer "F.Fab")
 			(uuid "2a113332-7a22-48cc-860f-a7b1aab3ce8f")
