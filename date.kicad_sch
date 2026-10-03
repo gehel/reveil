@@ -429,7 +429,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Display_Character:CA56-12EWA"
+		(symbol "Display_Character:CC56-12EWA"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -441,7 +441,7 @@
 					)
 				)
 			)
-			(property "Value" "CA56-12EWA"
+			(property "Value" "CC56-12EWA"
 				(at 19.05 13.97 0)
 				(effects
 					(font
@@ -467,7 +467,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "4 digit 7 segment high efficiency red LED, common anode"
+			(property "Description" "4 digit 7 segment high efficiency red LED, common cathode"
 				(at 0 0 0)
 				(effects
 					(font
@@ -494,7 +494,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "CA56-12EWA_0_0"
+			(symbol "CC56-12EWA_0_0"
 				(rectangle
 					(start -25.4 12.7)
 					(end 25.4 -12.7)
@@ -931,7 +931,7 @@
 					)
 				)
 			)
-			(symbol "CA56-12EWA_0_1"
+			(symbol "CC56-12EWA_0_1"
 				(circle
 					(center -13.716 -3.81)
 					(radius 0.3556)
@@ -955,7 +955,7 @@
 					)
 				)
 			)
-			(symbol "CA56-12EWA_1_0"
+			(symbol "CC56-12EWA_1_0"
 				(circle
 					(center 7.62 -4.064)
 					(radius 0.3556)
@@ -979,7 +979,7 @@
 					)
 				)
 			)
-			(symbol "CA56-12EWA_1_1"
+			(symbol "CC56-12EWA_1_1"
 				(pin input line
 					(at -27.94 7.62 0)
 					(length 2.54)
@@ -1127,7 +1127,7 @@
 				(pin input line
 					(at 27.94 -2.54 180)
 					(length 2.54)
-					(name "CA1"
+					(name "CC1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1145,7 +1145,7 @@
 				(pin input line
 					(at 27.94 -5.08 180)
 					(length 2.54)
-					(name "CA2"
+					(name "CC2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1163,7 +1163,7 @@
 				(pin input line
 					(at 27.94 -7.62 180)
 					(length 2.54)
-					(name "CA3"
+					(name "CC3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1181,7 +1181,7 @@
 				(pin input line
 					(at 27.94 -10.16 180)
 					(length 2.54)
-					(name "CA4"
+					(name "CC4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3046,7 +3046,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Display_Character:CA56-12EWA")
+		(lib_id "Display_Character:CC56-12EWA")
 		(at 152.4 88.9 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3063,7 +3063,7 @@
 				)
 			)
 		)
-		(property "Value" "CA56-12EWA"
+		(property "Value" "CC56-12EWA"
 			(at 152.4 73.66 0)
 			(effects
 				(font
@@ -3089,7 +3089,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "4 digit 7 segment high efficiency red LED, common anode"
+		(property "Description" "4 digit 7 segment high efficiency red LED, common cathode"
 			(at 152.4 88.9 0)
 			(effects
 				(font
@@ -3226,7 +3226,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Display_Character:CA56-12EWA")
+		(lib_id "Display_Character:CC56-12EWA")
 		(at 228.6 88.9 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3243,7 +3243,7 @@
 				)
 			)
 		)
-		(property "Value" "CA56-12EWA"
+		(property "Value" "CC56-12EWA"
 			(at 228.6 73.66 0)
 			(effects
 				(font
@@ -3269,7 +3269,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "4 digit 7 segment high efficiency red LED, common anode"
+		(property "Description" "4 digit 7 segment high efficiency red LED, common cathode"
 			(at 228.6 88.9 0)
 			(effects
 				(font
