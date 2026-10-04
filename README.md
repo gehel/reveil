@@ -195,7 +195,9 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
 - [ ] **Aucune sauvegarde de l'heure** : une coupure de courant efface l'heure et l'alarme, ce qui est critique pour un réveil. → DS3231 + pile CR2032 sur I2C (GP20/GP21 sont libres), et/ou synchronisation NTP par le WiFi du Pico W (firmware seul).
 - [ ] **Une LED 3 mm (~16 mA) réveille mal.** → LED de puissance ou ruban LED commandé par un MOSFET, comme le moteur.
 - [ ] **Moteur sur un jack 3,5 mm avec le +5 V sur le manchon** (exposé). → Connecteur polarisé et verrouillable (JST-XH, bornier). Pour M1, cocher « Exclure du PCB » plutôt que de laisser l'empreinte vide.
-- [ ] Petits plus : bouton reset (RUN vers GND) pour le développement ; 100 nF sur le curseur de LUMINOSITE, alimenté par ADC_VREF/AGND ; filtres RC recommandés pour les encodeurs EC11 (10 kΩ + 10 nF).
+- [x] 100 nF sur le curseur de LUMINOSITE, alimenté par ADC_VREF/AGND. → Ajouté **C7** (100 nF) sur le curseur, et le haut du potentiomètre LUMINOSITE1 reconnecté sur **ADC_VREF** (broche du Pico, auparavant non connectée) au lieu de +3V3. Empreintes placées et routées sur le PCB.
+- [x] ~~Bouton reset (RUN vers GND) pour le développement.~~ Pas voulu : décision du mainteneur, pas de bouton reset.
+- [x] ~~Filtres RC pour les encodeurs EC11 (10 kΩ + 10 nF).~~ Pas nécessaire pour l'instant : les encodeurs fonctionnent suffisamment bien sans, à revoir si besoin plus tard.
 
 **Faux positifs écartés par la revue** : 3V3_EN « sans pull-up » (pull-up interne au Pico), J2 « sans masse » (moteur commuté côté bas, voulu), absence de MPN (sans importance pour un montage à la main), J2 qui dépasse du bord (montage en bordure).
 
