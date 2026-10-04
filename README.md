@@ -187,7 +187,7 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
 **PCB**
 - [ ] Toutes les pistes font 0,2 mm, alimentations comprises. → Passer VBUS, GND et le chemin moteur (drain de Q2) à 0,5-1 mm.
 - [ ] Plan de masse B.Cu très découpé par les pistes de signal. → Ajouter des vias de couture GND, router moins en B.Cu.
-- [ ] VIBREUR fait ≈ 169 mm entre le Pico et Q2. → Garder R5 et la future résistance de rappel près de Q2 (déjà le cas pour R5).
+- [x] VIBREUR fait ≈ 169 mm entre le Pico et Q2. → Garder R5 et la future résistance de rappel près de Q2 (déjà le cas pour R5). C'est fait : R5 (~20 mm de Q2) et R6 (~5.5 mm de Q2, ajoutée avec la correction de la grille flottante) sont les deux près de Q2 ; les 169 mm sont juste le signal GP18 brut entre le Pico et R5, sans caractère critique.
 - [ ] Cartouche vide (titre, révision, date) sur le schéma et le PCB. → Le remplir (les sorties KiBot en profitent).
 - [ ] Ajouter des points de test (voir section suivante).
 
