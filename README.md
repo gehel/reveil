@@ -180,7 +180,7 @@ Copier les bibliothèques dans le dossier `lib/` du Pico (accessible en mode sto
 - [x] **R1 sans valeur** (valeur « R ») : c'est la résistance ISET de U2. → Mis à 47 kΩ comme R2 (≈ 14 mA par segment), sinon HEURE/ALARME n'auraient pas eu la même luminosité que DATE/ANNEE.
 
 **Alimentation**
-- [ ] **Le barrel jack J1 alimente directement VBUS** : si l'USB est branché en même temps, les deux 5 V sont en parallèle et l'alimentation du jack renvoie du courant vers le PC. Pas de protection contre l'inversion de polarité. → Rail 5 V externe pour MAX7219 + moteur + LED, Schottky de ce rail vers VSYS (broche 39), VBUS laissé à l'USB ; ajouter 220-470 µF en entrée.
+- [x] **Le barrel jack J1 alimente directement VBUS** : si l'USB est branché en même temps, les deux 5 V sont en parallèle et l'alimentation du jack renvoie du courant vers le PC. → Ajouté en schéma/PCB : **D3** (Schottky 1N5822, anode côté jack, cathode côté rail) et **C6** (220 µF) en entrée du jack, le rail résultant renommé **VSYS** (branché sur la broche VSYS/39 du Pico, plus sur VBUS/40). Tout ce qui était sur l'ancien net VBUS (MAX7219 U1/U2, moteur, LED, D2) est maintenant sur VSYS ; la broche VBUS du Pico (40) n'est plus connectée côté carte, elle ne sert plus qu'à l'alimentation USB du Pico lui-même. Vérifié par analyse du schéma et du netlist PCB (kibot non disponible dans cet environnement, DRC/ERC à relancer avant fabrication). Reste à faire : pas de protection contre l'inversion de polarité du jack ; le PCB physique existant n'a ni D3 ni C6 (nouveau PCB ou bodge nécessaire avant de tester l'alimentation par jack).
 - [ ] **Logique 3,3 V vers un MAX7219 alimenté en 5 V** : le VIH minimal du MAX7219 est de 3,5 V, les signaux du Pico sont hors spécification (ça marche, mais sans marge). → 74AHCT125 ou 74HCT245 alimenté en 5 V sur DIN/CLK/LOAD (6 signaux).
 - [ ] **Découplage des MAX7219 trop loin** (datasheet : 10 µF + 100 nF au plus près de V+/GND). Distances estimées depuis la broche V+ : U1 → C1 ≈ 21 mm, C2 ≈ 30 mm ; U2 → C3 ≈ 12 mm, C4 ≈ 15 mm. → Rapprocher à moins de 5 mm (le balayage du MAX7219 crée de forts pics de courant).
 
@@ -206,9 +206,9 @@ Pastilles traversantes (`TestPoint:TestPoint_THTPad_D2.0mm_Drill1.0mm`) ou boucl
 | Point | Net | Usage |
 |-------|-----|-------|
 | TP1, TP2, TP3 | GND | Masse pour la pince de l'oscilloscope / du multimètre : une près de J1, une près des MAX7219, une près de Q2 (boucles) |
-| TP4 | VBUS (5 V) | Tension d'entrée, chute sous charge (moteur + afficheurs à fond) |
+| TP4 | VBUS (5 V, broche 40 du Pico) | Présent seulement si le Pico est alimenté par USB ; n'est plus relié au jack J1 (voir « Alimentation » ci-dessus) |
 | TP5 | +3V3 | Sortie du régulateur du Pico |
-| TP6 | VSYS | Utile surtout si l'alimentation passe par VSYS (voir ci-dessus) |
+| TP6 | VSYS | Tension d'entrée réelle (USB ou jack via D3), chute sous charge (moteur + afficheurs à fond) |
 | TP7, TP8, TP9 | DATE_DIN, DATE_CLK, DATE_LOAD | Trame SPI vers U1 (niveaux logiques, décodage à l'analyseur logique) |
 | TP10, TP11, TP12 | HEURE_ALARME_DIN, HEURE_ALARME_CLK, HEURE_ALARME_LOAD | Trame SPI vers U2 |
 | TP13 | Grille de Q2 (après R5) | Commande du moteur, état au démarrage (vérifie la résistance de rappel) |

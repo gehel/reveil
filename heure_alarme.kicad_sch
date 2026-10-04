@@ -3136,12 +3136,13 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "VBUS"
-			(at 97.79 154.94 0)
+		(property "Value" "VSYS"
+			(at 100.33 158.7499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
@@ -3506,7 +3507,7 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "VBUS"
+		(property "Value" "VSYS"
 			(at 96.52 67.31 0)
 			(effects
 				(font
@@ -3642,12 +3643,13 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "VBUS"
-			(at 83.82 60.96 0)
+		(property "Value" "VSYS"
+			(at 86.36 64.7699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
